@@ -86,3 +86,12 @@ with open(active_csv, 'rb') as csvfile:
 
     output_file.close()
     print need_to_be_updated
+
+
+
+"""
+Dear user
+
+You registered as a %s Member for the OCNS organization. We would like to remind you that you should notify us if your status has been updated (Student, PostDoc, Faculty). 
+
+Note that OCNS is a non-profit organization, and 
