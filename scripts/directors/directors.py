@@ -1,15 +1,15 @@
 import csv
 
+year             = 2016
 fn               = "ReceiptExport.csv"
 active_members   = "active.csv" 
 inactive_members = "inactive.csv"
-
-output_file    = "cand2016.html"
-template       = """
+output_file      = "candidates_%d.html" %year
+template         = """
 
 <table border="1" frame="above">
     <tbody>
-        <tr valign="middle">
+        <tr valign="middle"  style="background : #eff080">
             <td style="border: 0px;"><img style="width: 100px; float: left; margin-right: 10px; margin-left: 10px;" src="%s" alt="" /></td>
             <td style="border: 0px; width: 200px; margin-top: 0px; margin-right: 0px; margin-bottom: 5px; margin-left: 10px; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 12px; line-height: 18px; padding: 0px;">
                 <p><strong>&nbsp;</strong></p>
@@ -24,12 +24,12 @@ template       = """
         </tr>
     </tbody>
 </table>
-<table border="3" frame="below">
+<table border="1" frame="below">
     <tbody>
         <tr>
             <td style="border: 0px; width: 10px; float: left; margin-right: 10px; margin-left: 10px;">&nbsp;</td>
-            <td style="border: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 5px; margin-left: 0px; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 12px; line-height: 18px; padding: 0px;">
-                <p><strong>Motivation:</strong>&nbsp;%s</p>
+            <td style="border: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 1px; margin-left: 0px; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 12px; line-height: 18px; padding: 0px;">
+                <p><h4>Motivation:</h4>&nbsp;%s</p>
                 <p>%s</p>
                 <p>%s</p>
             </td>
@@ -83,7 +83,7 @@ for surname in ordered:
         addr3 =  row['Country']
         memb  =  row['Group']
     else:
-        print surname, "is not a valid members. Details should be manually provided"
+        print surname, "is not a valid member: details should be manually provided"
         addr1 = ''
         addr2 = ''
         addr3 = ''
@@ -93,10 +93,8 @@ for surname in ordered:
     mot  = row['Motivation']          
     oth  = row['Other activities']
     if len(oth)>1:
-        oth = '<strong>Other information:</strong>&nbsp;%s'%oth
-            
-    stars = ''
-            
+        oth = '<h4>Other information:</h4>&nbsp;%s'%oth
+                        
     att = row['Attend CNS']
     if att == 'none':
         att = '0'
@@ -104,7 +102,7 @@ for surname in ordered:
     rev  = ", was reviewer for %s meetings"%row['Review CNS'] if row['Review CNS'] != "none" else ""
     year = row['Member start']
            
-    particip = "<strong>OCNS and CNS participation%s:</strong> attended %s CNS meeting(s)%s. OCNS member since %s."%(stars, att, rev, year)
+    particip = "<h4>OCNS and CNS participation:</h4> attended %s CNS meeting(s)%s. OCNS member since %s."%(att, rev, year)
                     
     pic = row['File Attachment']            
     url = row['URL']
