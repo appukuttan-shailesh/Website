@@ -5,8 +5,8 @@ import time
 
 
 
-active_csv          = 'active_clean.csv'   #  All reciepts exported, e.g. Export-OCNS-Receipts-475-25-Jun-2015-05-35-34.csv
-inactive_csv        = 'inactive_clean.csv'   #  Add to regs..
+active_csv          = 'active.csv'   #  All reciepts exported, e.g. Export-OCNS-Receipts-475-25-Jun-2015-05-35-34.csv
+inactive_csv        = 'inactive.csv'   #  Add to regs..
 update_inactive_csv = 'inactive_update.csv'
 update_active_csv   = 'active_update.csv'
 sutdent_threshold   = 5
@@ -49,7 +49,10 @@ with open(inactive_csv, 'rb') as csvfile:
             writer.writerow(data)
 
     output_file.close()
-    print need_to_be_updated
+    print "Inactive profiles that should be updated", need_to_be_updated
+
+
+need_to_be_updated = {'Student' : 0, 'Postdoc' : 0}
 
 with open(active_csv, 'rb') as csvfile:
     
@@ -85,13 +88,23 @@ with open(active_csv, 'rb') as csvfile:
             writer.writerow(data)
 
     output_file.close()
-    print need_to_be_updated
+    print "Active profiles that should be updated",  need_to_be_updated
 
 
 
 """
 Dear user
 
-You registered as a %s Member for the OCNS organization. We would like to remind you that you should notify us if your status has been updated (Student, PostDoc, Faculty). 
+You are receiving this automatic email because you registered for the OCNS organization, more than 5 years ago. 
 
-Note that OCNS is a non-profit organization, and 
+We would like to thank you for 
+
+We would like to remind you that you should notify us if your status has been updated (Student, PostDoc, Faculty). 
+
+Note that OCNS is a non-profit organization, 
+
+Kind Regards, 
+
+OCNS Webmaster
+
+"""
