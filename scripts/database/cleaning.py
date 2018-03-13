@@ -53,7 +53,6 @@ with open(inactive_csv, 'rb') as csvfile:
             row[field] = row[field].replace('ñ', "ä")
             row[field] = row[field].replace('í', "i")
 
-
             if field == 'Contact Name':
                 row[field] = row[field].title()
 
@@ -62,11 +61,11 @@ with open(inactive_csv, 'rb') as csvfile:
 
     output_file.close()
 
-    duplicates = suggest_duplicates(users)
-    f = open('inactive_duplicates.txt', 'w')
-    for user in duplicates:
-        f.write('%s\n' %user)
-    f.close()
+    # duplicates = suggest_duplicates(users)
+    # f = open('inactive_duplicates.txt', 'w')
+    # for user in duplicates:
+    #     f.write('%s\n' %user)
+    # f.close()
 
 
 with open(active_csv, 'rb') as csvfile:
@@ -97,8 +96,8 @@ with open(active_csv, 'rb') as csvfile:
 
     output_file.close()
 
-    duplicates = suggest_duplicates(users)
-    f = open('active_duplicates.txt', 'w')
-    for user in duplicates:
-        f.write('%s\n' %user)
-    f.close()
+    # duplicates = suggest_duplicates(users)
+    # f = open('active_duplicates.txt', 'w')
+    # for user in duplicates:
+    #     f.write('%s\n' %user)
+    # f.close()
