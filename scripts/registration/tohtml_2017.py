@@ -2,6 +2,7 @@
 import csv
 import sys
 import time
+import os
 
 from docx import Document
 from docx.shared import Pt
@@ -14,7 +15,7 @@ registered_email         = OrderedDict()
 registered_fullname      = OrderedDict()
 conf_year                = 2017
 conf_place               = "Antwerp, Belgium"
-main_registrations_csv   = 'Main.csv'   #  All reciepts exported, e.g. Export-OCNS-Receipts-475-25-Jun-2015-05-35-34.csv
+main_registrations_csv   = 'Main2017.csv'   #  All reciepts exported, e.g. Export-OCNS-Receipts-475-25-Jun-2015-05-35-34.csv
 add_to_registrations_csv = 'AddToReg.csv'   #  Add to regs..
 extras_csv               = 'Extras.csv'   #  Extras..
 display                  = True
@@ -248,140 +249,142 @@ with open(main_registrations_csv, 'rb') as csvfile:
 
 print('Processed %d Main Registrations' %len(registered_email))
 
+if os.path.exists(add_to_registrations_csv):
 
-with open(add_to_registrations_csv, 'rb') as csvfile:
-    
-    reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-
-    for row in reader:
-
-        email = row['Email']
-        if display:
-            print('Add items to registration of %s'%email)
-        if registered_email.has_key(email):
-            user = registered_email[email]
-        else:
-            best_user = find_best_user(row, registered_email)
-            accept = query_yes_no('Do you want to merge users?')
-            if accept:
-                user = registered_email[best_user]
-            else:
-                print('Please find a match for user %s in file %s' %(email, add_to_registrations_csv))
-                sys.exit()
-
-        changed = False
-
-        reg_nm = row['Reg Fee (Non-Member)']
-        reg_f  = row['Reg Fee (Faculty)']
-        reg_p  = row['Reg Fee (Postdoc)']
-        reg_s  = row['Reg Fee (Student)']
-
-        payment_info = reg_nm+reg_f+reg_p+reg_s
+    with open(add_to_registrations_csv, 'rb') as csvfile:
         
-        #if display:
-        #    print('Paid: %s'%payment_info)
+        reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
 
-        curr = user['paid']
+        for row in reader:
 
-        if 'Main Meeting' in payment_info:
-            curr += ' & MM '
-            meeting['main'] +=1
-            changed = True
+            email = row['Email']
+            if display:
+                print('Add items to registration of %s'%email)
+            if registered_email.has_key(email):
+                user = registered_email[email]
+            else:
+                best_user = find_best_user(row, registered_email)
+                accept = query_yes_no('Do you want to merge users?')
+                if accept:
+                    user = registered_email[best_user]
+                else:
+                    print('Please find a match for user %s in file %s' %(email, add_to_registrations_csv))
+                    sys.exit()
 
-        if 'Tutorial' in payment_info:
-            curr += ' & T '
-            meeting['tutorial']+=1
-            changed = True
+            changed = False
 
-        if 'Workshops 1 Day Only' in payment_info:
-            curr += ' & WS1day'
-            meeting['ws1'] +=1
-            changed = True
+            reg_nm = row['Reg Fee (Non-Member)']
+            reg_f  = row['Reg Fee (Faculty)']
+            reg_p  = row['Reg Fee (Postdoc)']
+            reg_s  = row['Reg Fee (Student)']
 
-        elif 'Workshops' in payment_info:
-            curr += ' & WS2day ' 
-            meeting['ws2'] +=1
-            changed = True
-
-        user['paid'] = curr
-
-        if not changed:
-            print('Please check: Nothing changed for {m} at line {l} !!'.format(m=email, l=count))
-            #sys.exit()
-
-
-with open(extras_csv, 'rb') as csvfile:
-
-    reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
-
-    for row in reader:
-
-        email = row['Email']
-        if display:
-            print('Add extras to registration of %s'%email)
+            payment_info = reg_nm+reg_f+reg_p+reg_s
             
-        if registered_email.has_key(email):
-            user = registered_email[email]
-        else:
-            best_user = find_best_user(row, registered_email)
+            #if display:
+            #    print('Paid: %s'%payment_info)
 
-            accept = query_yes_no('Do you want to merge users?')
-            if accept:
-                user = registered_email[best_user]
+            curr = user['paid']
+
+            if 'Main Meeting' in payment_info:
+                curr += ' & MM '
+                meeting['main'] +=1
+                changed = True
+
+            if 'Tutorial' in payment_info:
+                curr += ' & T '
+                meeting['tutorial']+=1
+                changed = True
+
+            if 'Workshops 1 Day Only' in payment_info:
+                curr += ' & WS1day'
+                meeting['ws1'] +=1
+                changed = True
+
+            elif 'Workshops' in payment_info:
+                curr += ' & WS2day ' 
+                meeting['ws2'] +=1
+                changed = True
+
+            user['paid'] = curr
+
+            if not changed:
+                print('Please check: Nothing changed for {m} at line {l} !!'.format(m=email, l=count))
+                #sys.exit()
+
+if os.path.exists(extras_csv):
+
+    with open(extras_csv, 'rb') as csvfile:
+
+        reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
+
+        for row in reader:
+
+            email = row['Email']
+            if display:
+                print('Add extras to registration of %s'%email)
+                
+            if registered_email.has_key(email):
+                user = registered_email[email]
             else:
-                print('Please find a match for user %s in file %s' %(email, add_to_registrations_csv))
-                sys.exit()
+                best_user = find_best_user(row, registered_email)
+
+                accept = query_yes_no('Do you want to merge users?')
+                if accept:
+                    user = registered_email[best_user]
+                else:
+                    print('Please find a match for user %s in file %s' %(email, add_to_registrations_csv))
+                    sys.exit()
 
 
-        changed = False
-        banq    = int(row['BanquetTickets'])
-        exbanq  = int(row['ExtraBanquetTickets'])
+            changed = False
+            banq    = int(row['BanquetTickets'])
+            exbanq  = int(row['ExtraBanquetTickets'])
 
-        if banq > 0:
-            curr = 0 if len(user['banquet']) == 0 else int(user['banquet'])
-            user['banquet'] = curr + banq
-            changed = True
-            extras['banquet'] += banq
-            #print('Increasing banquet tickets from %d to %d'%(curr, user['banquet']))
-
-        if exbanq > 0:
-            extras['banquet'] += exbanq
-            curr = 0 if len(user['extrabanquet']) == 0 else int(user['extrabanquet'])
-            user['extrabanquet'] = curr + exbanq
-            changed = True
-            #print('Increasing extra banquet tickets from %d to %d'%(curr, user['extrabanquet']))
-
-        for size in ['S', 'M', 'L', 'XL']:
-            nb_shirt = int(row['Shirt {}'.format(size)])
-            shirt = ''
-            if int(nb_shirt) > 0: shirt += nb_shirt + ' * {} '.format(size)
-            user['shirt'] += shirt
-            tshirts[size] += int(nb_shirt)
-            if int(nb_shirt) > 0:
-                #print("Adding %d shirts of size %s" %(int(nb_shirt), size))
+            if banq > 0:
+                curr = 0 if len(user['banquet']) == 0 else int(user['banquet'])
+                user['banquet'] = curr + banq
                 changed = True
+                extras['banquet'] += banq
+                #print('Increasing banquet tickets from %d to %d'%(curr, user['banquet']))
 
-        prog = row['Printed Program']
-        if prog != 'No':
-            if user['program'] == 'Yes':
-                print('User already has a program!!')
-                sys.exit()
-            else:
-                user['program'] = 'Yes'
-                extras['program'] += 1
-                #print("Adding a Printed Program")
+            if exbanq > 0:
+                extras['banquet'] += exbanq
+                curr = 0 if len(user['extrabanquet']) == 0 else int(user['extrabanquet'])
+                user['extrabanquet'] = curr + exbanq
                 changed = True
+                #print('Increasing extra banquet tickets from %d to %d'%(curr, user['extrabanquet']))
 
-        for date in ['1507', '1607', '1707', '1807', '1907', '2007']:    
-            lunch = row['lunch' + date]
-            user['lunch' + date] = '%s'%('' if lunch == '0' else lunch)
-            lunches[date]+= int(lunch)
-            if int(lunch) > 0:
-                #print("Adding %d lunch for the date %s" %(int(lunch), date))
-                changed = True
+            for size in ['S', 'M', 'L', 'XL']:
+                nb_shirt = int(row['Shirt {}'.format(size)])
+                shirt = ''
+                if int(nb_shirt) > 0: shirt += nb_shirt + ' * {} '.format(size)
+                user['shirt'] += shirt
+                tshirts[size] += int(nb_shirt)
+                if int(nb_shirt) > 0:
+                    #print("Adding %d shirts of size %s" %(int(nb_shirt), size))
+                    changed = True
 
-        if not changed:
-            print('Please check: Nothing changed for {m} at line {l} !!'.format(m=email, l=count))
+            prog = row['Printed Program']
+            if prog != 'No':
+                if user['program'] == 'Yes':
+                    print('User already has a program!!')
+                    sys.exit()
+                else:
+                    user['program'] = 'Yes'
+                    extras['program'] += 1
+                    #print("Adding a Printed Program")
+                    changed = True
+
+            for date in ['1507', '1607', '1707', '1807', '1907', '2007']:    
+                lunch = row['lunch' + date]
+                user['lunch' + date] = '%s'%('' if lunch == '0' else lunch)
+                lunches[date]+= int(lunch)
+                if int(lunch) > 0:
+                    #print("Adding %d lunch for the date %s" %(int(lunch), date))
+                    changed = True
+
+            if not changed:
+                print('Please check: Nothing changed for {m} at line {l} !!'.format(m=email, l=count))
 
 
 
@@ -509,7 +512,7 @@ contents = unicode(t.render(variables))
 #print contents
 
 import codecs
-html = codecs.open('Main.html', 'w',encoding='utf8')
+html = codecs.open('Main_%d.html' %conf_year, 'w',encoding='utf8')
 html.write(contents)
 html.close()
 

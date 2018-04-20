@@ -13,11 +13,11 @@ from collections import OrderedDict
 
 registered_email         = OrderedDict()
 registered_fullname      = OrderedDict()
-conf_year                = 2018
-conf_place               = "Seattle, USA"
-main_registrations_csv   = 'Main2018.csv'   #  All reciepts exported, e.g. Export-OCNS-Receipts-475-25-Jun-2015-05-35-34.csv
+conf_year                = 2014
+conf_place               = "Quebec City, Canada"
+main_registrations_csv   = 'Main2014.csv'   #  All reciepts exported, e.g. Export-OCNS-Receipts-475-25-Jun-2015-05-35-34.csv
 add_to_registrations_csv = 'AddToReg.csv'   #  Add to regs..
-extras_csv               = 'Extras2018.csv'   #  Extras..
+extras_csv               = 'Extras.csv'   #  Extras..
 display                  = True
 countries                = {}
 
@@ -51,7 +51,6 @@ to_write_full = {"First name" : 'first_name',
                  "Member type" : "type0", 
                  "Type of registration" : "paid",
                  "Banquet" : "banquet",
-                 "Extra Banquet" : "extrabanquet",
                  "Special dietary requirements" : "meal",
                  "T-Shirts" : "shirt"}
 
@@ -119,7 +118,7 @@ def find_best_user(row, registered_email):
 
 with open(main_registrations_csv, 'rb') as csvfile:
 
-    reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
+    reader = csv.DictReader(csvfile, delimiter=',', quotechar='"'   )
 
     for count, row in enumerate(reader):
    
@@ -132,7 +131,7 @@ with open(main_registrations_csv, 'rb') as csvfile:
         last_name     = row['Last Name'].strip().title()
         middle_name   = row['Middle Name'].strip()
         first_name    = row['First Name'].strip().title()
-        user['name']  = ('<b>%s</b> %s %s'%(last_name, first_name, middle_name)).strip()
+        user['name']  = ('<b>%s</b> %s %s'%(last_name, first_name, middle_name)).strip().decode('utf-8','ignore')
         user['full_name']   = '%s %s'%(last_name, first_name)
         user['first_name']  = '%s' %first_name
         user['middle_name'] = '%s' %middle_name
@@ -196,17 +195,15 @@ with open(main_registrations_csv, 'rb') as csvfile:
         shirt = ''
         for size in ['S', 'M', 'L', 'XL']:
             nb_shirt = row['Shirt {}'.format(size)]
+            print nb_shirt
             if int(nb_shirt) > 0: shirt += nb_shirt + ' * {} '.format(size)
             user['shirt'] = shirt
             tshirts[size]+= int(nb_shirt)
 
         banquet = row['BanquetTickets']
-        extraba = row['ExtraBanquetTickets']
         meal    = row['Special Meal']
 
         user['banquet']      = '%s'%('' if banquet == '0' else banquet)
-        user['extrabanquet'] = '%s'%('' if extraba == '0' else extraba)
-        extras['banquet']   += int(banquet) + int(extraba)
         user['meal']         = meal
 
         inst = row['Institution'].strip()
@@ -320,7 +317,6 @@ if os.path.exists(extras_csv):
 
             changed = False
             banq    = int(row['BanquetTickets'])
-            exbanq  = int(row['ExtraBanquetTickets'])
 
             if banq > 0:
                 curr = 0 if len(user['banquet']) == 0 else int(user['banquet'])
@@ -328,12 +324,6 @@ if os.path.exists(extras_csv):
                 changed = True
                 extras['banquet'] += banq
                 #print('Increasing banquet tickets from %d to %d'%(curr, user['banquet']))
-
-            if exbanq > 0:
-                extras['banquet'] += exbanq
-                curr = 0 if len(user['extrabanquet']) == 0 else int(user['extrabanquet'])
-                user['extrabanquet'] = curr + exbanq
-                changed = True
                 #print('Increasing extra banquet tickets from %d to %d'%(curr, user['extrabanquet']))
 
             for size in ['S', 'M', 'L', 'XL']:
