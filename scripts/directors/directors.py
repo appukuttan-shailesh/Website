@@ -1,6 +1,6 @@
 import csv
 
-year             = 2016
+year             = 2017
 fn               = "ReceiptExport.csv"
 active_members   = "active.csv" 
 inactive_members = "inactive.csv"
@@ -9,16 +9,14 @@ template         = """
 
 <table border="1" frame="above">
     <tbody>
-        <tr valign="middle"  style="background : #eff080">
-            <td style="border: 0px;"><img style="width: 100px; float: left; margin-right: 10px; margin-left: 10px;" src="%s" alt="" /></td>
-            <td style="border: 0px; width: 200px; margin-top: 0px; margin-right: 0px; margin-bottom: 5px; margin-left: 10px; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 12px; line-height: 18px; padding: 0px;">
-                <p><strong>&nbsp;</strong></p>
-                <p><strong>&nbsp;<a href="%s" target="_blank">%s</a></strong></p>
-                <p><strong>&nbsp;%s</strong></p>
-                <p>&nbsp;%s<br />&nbsp;%s<br />&nbsp;%s</p>
-                <p><strong>&nbsp;</strong></p>
+        <tr valign="middle"  style="background : #eff8fd">
+            <td style="border: 0px; width:100px"><img style="width: 100px; float: left; margin-right: 10px; margin-left: 10px;" src="%s" alt="" /></td>
+            <td style="border: 0px; width:200px; margin-top: 0px; margin-right: 10px; margin-bottom: 5px; margin-left: 10px; outline-width: 0px; outline-style: initial; outline-color: initial; line-height: 18px; padding: 0px;">
+                <p><strong><a href="%s" target="_blank">%s</a></strong></p>
+                <address>%s</address>
+                <address>%s<br />%s<br />%s</address>
             </td>
-            <td style="border: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 5px; margin-left: 0px; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 12px; line-height: 18px; padding: 0px;">
+            <td style="width:400px; border: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 5px; margin-left: 0px; outline-width: 0px; outline-style: initial; outline-color: initial; line-height: 18px; padding: 0px;">
                 <p>%s</p>
             </td>
         </tr>
@@ -28,8 +26,8 @@ template         = """
     <tbody>
         <tr>
             <td style="border: 0px; width: 10px; float: left; margin-right: 10px; margin-left: 10px;">&nbsp;</td>
-            <td style="border: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 1px; margin-left: 0px; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 12px; line-height: 18px; padding: 0px;">
-                <p><h4>Motivation:</h4>&nbsp;%s</p>
+            <td style="border: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 1px; margin-left: 0px; outline-width: 0px; outline-style: initial; outline-color: initial; line-height: 18px; padding: 0px;">
+                <p><h2>Motivation:</h2>&nbsp;%s</p>
                 <p>%s</p>
                 <p>%s</p>
             </td>
@@ -93,7 +91,7 @@ for surname in ordered:
     mot  = row['Motivation']          
     oth  = row['Other activities']
     if len(oth)>1:
-        oth = '<h4>Other information:</h4>&nbsp;%s'%oth
+        oth = '<h2>Other information:</h2>&nbsp;%s'%oth
                         
     att = row['Attend CNS']
     if att == 'none':
@@ -102,7 +100,7 @@ for surname in ordered:
     rev  = ", was reviewer for %s meetings"%row['Review CNS'] if row['Review CNS'] != "none" else ""
     year = row['Member start']
            
-    particip = "<h4>OCNS and CNS participation:</h4> attended %s CNS meeting(s)%s. OCNS member since %s."%(att, rev, year)
+    particip = "<h2>OCNS and CNS participation:</h2> attended %s CNS meeting(s)%s. OCNS member since %s."%(att, rev, year)
                     
     pic = row['File Attachment']            
     url = row['URL']

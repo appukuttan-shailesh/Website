@@ -16,8 +16,8 @@ registered_fullname      = OrderedDict()
 conf_year                = 2018
 conf_place               = "Seattle, USA"
 main_registrations_csv   = 'Main2018.csv'   #  All reciepts exported, e.g. Export-OCNS-Receipts-475-25-Jun-2015-05-35-34.csv
-add_to_registrations_csv = 'AddToReg.csv'   #  Add to regs..
-extras_csv               = 'Extras2018.csv'   #  Extras..
+add_to_registrations_csv = 'AddToReg2018.csv'   #  Add to regs..
+extras_csv               = 'AddExtras2018.csv'   #  Extras..
 display                  = True
 countries                = {}
 
@@ -337,7 +337,7 @@ if os.path.exists(extras_csv):
                 #print('Increasing extra banquet tickets from %d to %d'%(curr, user['extrabanquet']))
 
             for size in ['S', 'M', 'L', 'XL']:
-                nb_shirt = int(row['Shirt {}'.format(size)])
+                nb_shirt = row['Shirt {}'.format(size)]
                 shirt = ''
                 if int(nb_shirt) > 0: shirt += nb_shirt + ' * {} '.format(size)
                 user['shirt'] += shirt
