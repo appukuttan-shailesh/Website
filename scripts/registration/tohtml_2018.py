@@ -268,22 +268,26 @@ if os.path.exists(add_to_registrations_csv):
             curr = user['paid']
 
             if 'Main Meeting' in payment_info:
-                curr += ' & MM '
+                if curr.find('MM') == -1:
+                    curr += ' MM '
                 meeting['main'] +=1
                 changed = True
 
             if 'Tutorial' in payment_info:
-                curr += ' & T '
+                if curr.find('T') == -1:
+                    curr += ' T '
                 meeting['tutorial']+=1
                 changed = True
 
             if 'Workshops 1 Day Only' in payment_info:
-                curr += ' & WS1day'
+                if curr.find('WS1day') == -1:
+                    curr += ' WS1day'
                 meeting['ws1'] +=1
                 changed = True
 
             elif 'Workshops' in payment_info:
-                curr += ' & WS2day ' 
+                if curr.find('WS2day') == -1:
+                    curr += ' WS2day ' 
                 meeting['ws2'] +=1
                 changed = True
 
@@ -394,12 +398,13 @@ template = """
 <p> {{ postdoc }} </p>
 <p> {{ student }} </p>
 <p> {{ all_countries }} </p>
-<br/>F
+<br/>
 
 <table border="1">
-<th>
+<tr>
     <td>Country</td>
-</th>
+    <td>Participants</td>
+</tr>
 
 {% for reg in countries %}
   <tr>
@@ -411,6 +416,7 @@ template = """
 
 
 <p>Number of banquet tickets: {{ banquet }}</p>
+<p>Number of Extra banquet tickets: {{ extrabanquet }}</p>
 <p>Number of shirts S: {{ S }}</p>
 <p>Number of shirts M: {{ M }}</p>
 <p>Number of shirts L: {{ L }}</p>
@@ -423,6 +429,7 @@ template = """
     <td>Paid</td>
     <td>Shirt</td>
     <td>Banquet tickets</td>
+    <td>Extra Banquet tickets</td>
     <td>To pay</td>
     <td>Special Meal</td>
 </th>
@@ -435,6 +442,7 @@ template = """
     <td>{{ reg.paid }}</td>
     <td>{{ reg.shirt }}</td>
     <td>{{ reg.banquet }}</td>
+    <td>{{ reg.extrabanquet }}</td>
     <td>{{ reg.balance }}</td>
     <td>{{ reg.meal }}</td>
   </tr>
@@ -494,8 +502,8 @@ for reg in registrations:
     run = paragraph.add_run()
     run.add_picture('ocns.png')
         
-    full_csv   += "\t".join([str(reg[value]) for value in to_write_full.values()]) + "\n"
-    badges_csv += "\t".join([str(reg[value]) for value in to_write_badges.values()]) + "\n"
+    full_csv   += "\t".join([str(reg[value]).replace(',', ' ') for value in to_write_full.values()]) + "\n"
+    badges_csv += "\t".join([str(reg[value]).replace(',', ' ') for value in to_write_badges.values()]) + "\n"
 
     count  += 1
     if count == 6:
