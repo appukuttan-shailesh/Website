@@ -76,7 +76,7 @@ def check_user_registration(api_token, user_search_terms, year):
     }
     URL_user = 'https://ocns.memberclicks.net/services/user?searchText='
     for aterm in user_search_terms:
-        url = URL_user + aterm
+        url = URL_user + aterm + '#'
 
         # Make the request
         r = requests.get(url, headers=headers)
@@ -138,7 +138,7 @@ def check_user_registration(api_token, user_search_terms, year):
                     print("Received status code {}".format(r.status_code))
                     print("Response: {}".format(r.text))
         elif r.status_code == 204:
-            print("No users found with e-mail {}".format(aterm))
+            print("No users found with search term {}".format(aterm))
             print("Received status code {}".format(r.status_code))
         else:
             print("Received status code {}".format(r.status_code))
@@ -197,15 +197,24 @@ def get_attribute_list(api_token):
         print("Response: {}".format(r.text))
 
 
-def get_user_info(api_token, user_search_terms):
+def get_user_info(api_token, user_search_terms, active):
     """
     Get information from the database about a list of users.
 
+    Currently, the API does not seem to return inactive users even when the
+    parameter is given.
+
     :api_token: api_token
     :user_search_terms: list of usernames
+    :active: whether or not user is active
     :returns: nothing
 
     """
+    if active == "true":
+        print("Looking in active users")
+    else:
+        print("Looking in inactive users")
+
     URL_user = (
         'https://ocns.memberclicks.net/services/user?pageSize=100&searchText='
     )
@@ -214,7 +223,8 @@ def get_user_info(api_token, user_search_terms):
         'Authorization': api_token
     }
     for aterm in user_search_terms:
-        url = URL_user + aterm  # + '?active=true'
+        url = URL_user + aterm + '&active={}'.format(active) + '#'
+        print(url)
 
         # Make the request
         r = requests.get(url, headers=headers)
@@ -243,7 +253,7 @@ def get_user_info(api_token, user_search_terms):
                     print("Received status code {}".format(r.status_code))
                     print("Response: {}".format(r.text))
         elif r.status_code == 204:
-            print("No users found with e-mail {}".format(aterm))
+            print("No users found with search term {}".format(aterm))
             print("Received status code {}".format(r.status_code))
         else:
             print("Received status code {}".format(r.status_code))
