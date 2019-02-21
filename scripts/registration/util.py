@@ -268,7 +268,7 @@ if __name__ == "__main__":
     year = "2019"
 
     # list of users to check
-    users = ['herts']
+    users = ['a.sinha2@herts.ac.uk']
 
     # Do the work
     token = get_token(api_key, username, password)
