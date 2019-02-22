@@ -8,7 +8,7 @@ Adding a new newsletter release
 Step 1: Obtain Newsletter from Board member in-charge
 ---------------------------------------------------------
 
-A member of the OCNS Board is in#.charge of the news letter and will get in
+A member of the OCNS Board is in-charge of the news letter and will get in
 touch with the webmasters when a new version is ready to be disseminated.
 They will provide a file (PDF) that needs to be added to the website.
 
@@ -29,7 +29,8 @@ Step 3: Update the newsletter article page
 The newsletter article page on the website at https://www.cnsorg.org/newsletter
 needs to be updated to list the new newsletter.
 
-#. Access the "Newsletter" article page: Website > Article Manager > Newsletter (search Newsletter in the search box if needed).  #. Click the entry to go to the Edit page.
+#. Access the "Newsletter" article page: Website > Article Manager > Newsletter (search Newsletter in the search box if needed).
+   #. Click the entry to go to the Edit page.
 #. Click in the text area.
 #. Obtain the link to the newsletter file:
    #. Click "site links" at the bottom of the page.
