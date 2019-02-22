@@ -30,22 +30,30 @@ The newsletter article page on the website at https://www.cnsorg.org/newsletter
 needs to be updated to list the new newsletter.
 
 #. Access the "Newsletter" article page: Website > Article Manager > Newsletter (search Newsletter in the search box if needed).
+
    #. Click the entry to go to the Edit page.
+
 #. Click in the text area.
 #. Obtain the link to the newsletter file:
+
    #. Click "site links" at the bottom of the page.
    #. Navigate to docs > newsletter.
    #. Select the new newsletter by clicking on the "link" icon.
    #. Click "Insert link".
+
 #. Click "Toggle Editor" to change the editor to HTML mode.
 #. Move previous newsletter to the list under "Previous newsletters"
+
    #. Add a new list item using the HTML :code:`<li>` tag at the start of the list.
    #. Copy the value of the :code:`data=` field of the :code:`<object>` tag.
    #. Use this for the :code:`href=` field in the new list item.
    #. Add text for the link.
+
 #. Add new newsletter:
+
    #. To make the new newsletter available using the browser's PDF reader, Replace the contents of the :code:`data=` field of the :code:`<object>` tag with the link of the new newsletter obtained in step 3.
    #. To place a link for browsers that do not support PDF reading, replace the contents of the :code:`href=` field of the :code:`<a>` tag with the link of the new newsletter obtained in step 3.
+
 #. Delete the line inserted by "Site links" in step 3.
 #. Use "Toggle Editor" to preview your changes.
 #. If everything is OK, click the "Save" button in the top right hand corner to
