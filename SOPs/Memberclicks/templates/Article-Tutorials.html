@@ -1,0 +1,102 @@
+<!--
+Template for the Tutorials page.
+
+Updates required:
+- Location
+- Date
+- Location
+- Tables with schedules
+
+These are marked in {% .. %}
+
+Changelog
+* 2019 Mar 02 Ankur Sinha
+- Add initial template
+
+-->
+<h1 style="text-align: justify;"><span style="color: #9f2722;">CNS*{% YEAR %} {% LOCATION %} : Tutorials</span> </h1>
+<h2>Program for {% DAY %} {% DATE %} {% MONTH %}</h2>
+<blockquote>
+  <p>Tutorials are intended as introductions into main methodologies of various fields in computational neuroscience. This year, CNS tutorials offer introductory full day courses on cellular and network level modelling as well as specialized half day tutorials. Tutorials are particularly tailored for early stage researchers as well as researchers entering a new field in computational neuroscience.</p>
+</blockquote>
+<p>For inquiries related to these workshops, please contact the tutorials organizer: <a href="mailto:tutorials@cnsorg.org">tutorials@cnsorg.org</a>. Please note that the program is not final.</p>
+<h2>Location</h2>
+<p><span>{% ADD LOCATION DESCRIPTION TEXT HERE %}</span></p>
+<h2>Room assignments</h2>
+<p><a name="#{% LOCATION 1 %}"></a></p>
+<table style="width: 100%;" border="0">
+  <tbody>
+    <tr><th style="width: 25%;">{% LOCATION 1 %}</th></tr>
+    <tr>
+      <td style="width: 25%; background-color: #eff8fd; text-align: center;"><strong>{% ROOM 1 %}</strong></td>
+      <td colspan="1">
+        <ul>
+          <li><a href="#T2"><strong>T2:</strong>{% Tutorial 1 title %}</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 25%; background-color: #eff8fd; text-align: center;"><strong>{% ROOM 2 %}</strong></td>
+      <td colspan="1">
+        <ul>
+          <li><a href="#T1"><strong>T1: </strong>{% Tutorial 2 title %}</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- Schedule table -->
+<h2>Schedule</h2>
+<table border="0">
+  <tbody>
+    <tr><th>{% Date %}</th></tr>
+    <tr><th>Location </th><th>{% LOCATION 1%}</th><th>{% LOCATION 2%}</th></tr>
+    <tr>
+      <td style="text-align: center;"> 08.00-17.00</td>
+      <td style="background-color: #d3d3d3; text-align: center;" colspan="2"><strong>{% NOTICE 1 %}</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">09.00-12.00</td>
+      <td style="background-color: #ffe4b5; text-align: center;"><a href="#T1"><strong>T1: </strong>{% Tutorial title 1}</a></td>
+      <td style="background-color: #ffe4b5; text-align: center;"><a href="#T2"><strong>T2: </strong>{% Tutorial title 2}</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">17.00</td>
+      <td style="background-color: #d3d3d3; text-align: center;" colspan="2"><a href="/cns-{% YEAR %}-meeting-program" target="_blank"><strong>Main meeting begins</strong></a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><span>Whole day tutorials</span></h2>
+<table style="background-color: #eff8fd; width: 100%;" border="0">
+  <tbody>
+    <tr><th>Title</th><th>Organizers</th><th>Reference</th><th>Location</th></tr>
+    <tr>
+      <td><a href="#T1"><strong>{% Tutorial title %}</strong></a></td>
+      <td>{% Organisers %}</td>
+      <td>{% ID %}</td>
+      <td style="text-align: center;"><a href="#AI"><strong>{% Location %}</strong></a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Half-day tutorials</h2>
+<table style="background-color: #eff8fd; width: 100%;" border="0">
+  <tbody>
+    <tr><th>Title</th><th>Organizers</th><th>Reference</th><th>Location</th></tr>
+  </tbody>
+</table>
+
+<!-- Longer descriptions of tutorials -->
+<h2><br />Descriptions</h2>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T1"></a><span style="color: #800000;">T1: {% Tutorial title %}</span></span></span></h3>
+<ul>
+  <li>{% Organiser 1 %}</li>
+  <li>{% Organiser 2 %}</li>
+</ul>
+<blockquote>
+  <p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+  <p><span style="font-family: Arial, serif;"><span lang="en-US">{% Tutorial description paragraph 1 %}</span></span></p>
+  <p><span style="font-family: Arial, serif;"><span lang="en-US">{% Tutorial description paragraph 2 %}</span></span></p>
+  <p align="justify"> <span lang="en-US"><strong>Software tools</strong></span></p>
+</blockquote>
