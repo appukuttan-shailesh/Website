@@ -1,8 +1,8 @@
 Setting up waiver vouchers
 ###########################
 
-OCNS waives fees for various sets of attendees. Please check with the treasurer
-every year to confirm what the waivers are.
+OCNS waives conference fees for various sets of attendees. Please check with
+the treasurer every year to confirm what the waivers are.
 
 The Board
 ==========
