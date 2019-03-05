@@ -10,23 +10,27 @@ Updates required:
 These are marked in {% .. %}
 
 Changelog
+*2019 Mar 05 Ankur Sinha
+- Add list and descriptions of tutorials.
+
 * 2019 Mar 02 Ankur Sinha
 - Add initial template
 
 -->
-<h1 style="text-align: justify;"><span style="color: #9f2722;">CNS*{% YEAR %} {% LOCATION %} : Tutorials</span> </h1>
-<h2>Program for {% DAY %} {% DATE %} {% MONTH %}</h2>
+<h1 style="text-align: justify;"><span style="color: #9f2722;">CNS*2019 Barcelona: Tutorials</span> </h1>
+<h2>Program for Friday, 13th July.</h2>
 <blockquote>
-  <p>Tutorials are intended as introductions into main methodologies of various fields in computational neuroscience. This year, CNS tutorials offer introductory full day courses on cellular and network level modelling as well as specialized half day tutorials. Tutorials are particularly tailored for early stage researchers as well as researchers entering a new field in computational neuroscience.</p>
+<p>Tutorials are intended as introductions into main methodologies of various fields in computational neuroscience. This year, CNS tutorials offer introductory full day courses on cellular and network level modelling as well as specialized half day tutorials. Tutorials are particularly tailored for early stage researchers as well as researchers entering a new field in computational neuroscience.</p>
 </blockquote>
 <p>For inquiries related to these workshops, please contact the tutorials organizer: <a href="mailto:tutorials@cnsorg.org">tutorials@cnsorg.org</a>. Please note that the program is not final.</p>
+<!-- Location and schedule not yet ready
 <h2>Location</h2>
 <p><span>{% ADD LOCATION DESCRIPTION TEXT HERE %}</span></p>
 <h2>Room assignments</h2>
-<p><a name="#{% LOCATION 1 %}"></a></p>
+<p><a name="#AI"></a></p>
 <table style="width: 100%;" border="0">
   <tbody>
-    <tr><th style="width: 25%;">{% LOCATION 1 %}</th></tr>
+    <tr><th style="width: 25%;">Location TBD</th></tr>
     <tr>
       <td style="width: 25%; background-color: #eff8fd; text-align: center;"><strong>{% ROOM 1 %}</strong></td>
       <td colspan="1">
@@ -45,7 +49,7 @@ Changelog
     </tr>
   </tbody>
 </table>
-<!-- Schedule table -->
+--> <!-- Schedule table: not yet ready
 <h2>Schedule</h2>
 <table border="0">
   <tbody>
@@ -62,41 +66,307 @@ Changelog
     </tr>
     <tr>
       <td style="text-align: center;">17.00</td>
-      <td style="background-color: #d3d3d3; text-align: center;" colspan="2"><a href="/cns-{% YEAR %}-meeting-program" target="_blank"><strong>Main meeting begins</strong></a></td>
+      <td style="background-color: #d3d3d3; text-align: center;" colspan="2"><a href="/cns-2019-meeting-program" target="_blank"><strong>Main meeting begins</strong></a></td>
     </tr>
   </tbody>
 </table>
-
+--> <a name="TutorialList"></a>
 <h2><span>Whole day tutorials</span></h2>
 <table style="background-color: #eff8fd; width: 100%;" border="0">
-  <tbody>
-    <tr><th>Title</th><th>Organizers</th><th>Reference</th><th>Location</th></tr>
-    <tr>
-      <td><a href="#T1"><strong>{% Tutorial title %}</strong></a></td>
-      <td>{% Organisers %}</td>
-      <td>{% ID %}</td>
-      <td style="text-align: center;"><a href="#AI"><strong>{% Location %}</strong></a></td>
-    </tr>
-  </tbody>
+<tbody>
+<tr><th>Title</th><th>Lecturers</th><th>Reference</th><th>Location</th></tr>
+<tr>
+<td><a href="#T1"><strong>Introduction to the simulation of structurally detailed large-scale neuronal networks (NEST)</strong></a></td>
+<td>Alexander van Meegen and Dennis Terhorst</td>
+<td>T1</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+<tr>
+<td><a href="#T2"><strong>Building biophysically detailed neuronal models: from molecules to networks (NEURON and NetPyNE)</strong></a></td>
+<td>Robert A McDougal, Salvador Dura-Bernal, and William W Lytton</td>
+<td>T2</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+<tr>
+<td><a href="#T3"><strong>Model-based analysis of brain connectivity from neuroimaging data: estimation, analysis and classification</strong></a></td>
+<td>Andrea Insabato, Adrià Tauste-Campo, Matthieu Gilson, and Gorka Zamora-López</td>
+<td>T3</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+<tr>
+<td><a href="#T4"><strong>Simulating Multiple Interacting Neural Populations using Population Density Techniques (using MIIND),</strong></a></td>
+<td>Hugh Osborne, Marc de Kamps, and Lukas Deutz</td>
+<td>T4</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+<tr>
+<td><a href="#T5"><strong>Simulating dendrites at different levels of abstraction</strong></a></td>
+<td>Everton J. Agnes, Spyridon Chavlis, Athanasia Papoutsi, and William F. Podlaski</td>
+<td>T5</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+<tr>
+<td><a href="#T6"><strong>Field theory of neuronal networks</strong></a></td>
+<td>Moritz Helias, David Dahmen, and Andrea Crisanti</td>
+<td>T6</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+<tr>
+<td><a href="#T7"><strong>Introduction to high-performance neurocomputing</strong></a></td>
+<td>Tadashi Yamazaki and Jun Igarashiy</td>
+<td>T7</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+</tbody>
 </table>
-
 <h2>Half-day tutorials</h2>
 <table style="background-color: #eff8fd; width: 100%;" border="0">
-  <tbody>
-    <tr><th>Title</th><th>Organizers</th><th>Reference</th><th>Location</th></tr>
-  </tbody>
+<tbody>
+<tr><th>Title</th><th>Lecturers</th><th>Reference</th><th>Location</th></tr>
+<tr>
+<td><a href="#T8"><strong>Modeling and analysis of extracellular potentials (LFPy)</strong></a></td>
+<td>Gaute T. Einevoll and Espen Hagen</td>
+<td>T8</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+<tr>
+<td><a href="#T9"><strong>Modeling neural systems in MATLAB using the DynaSim Toolbox</strong></a></td>
+<td>Jason Sherfey</td>
+<td>T9</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+<tr>
+<td><a href="#T10"><strong>Design and sensitivity analysis of neural models (using PyRates and PySense)</strong></a></td>
+<td>Richard Gast, Konstantin Weise, Daniel Rose and Thomas R. Knösche</td>
+<td>T10</td>
+<td style="text-align: center;"><a href="#AI"><strong>TBD</strong></a></td>
+</tr>
+</tbody>
 </table>
-
 <!-- Longer descriptions of tutorials -->
 <h2><br />Descriptions</h2>
-<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T1"></a><span style="color: #800000;">T1: {% Tutorial title %}</span></span></span></h3>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T1"></a><span style="color: #800000;">T1: Introduction to the simulation of structurally detailed large-scale neuronal networks (using NEST).</span></span></span></h3>
 <ul>
-  <li>{% Organiser 1 %}</li>
-  <li>{% Organiser 2 %}</li>
+<li>Alexander van Meegen (Jülich Research Centre and JARA, Germany).</li>
+<li>Dennis Terhorst (Jülich Research Centre and JARA, Germany).</li>
 </ul>
 <blockquote>
-  <p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
-  <p><span style="font-family: Arial, serif;"><span lang="en-US">{% Tutorial description paragraph 1 %}</span></span></p>
-  <p><span style="font-family: Arial, serif;"><span lang="en-US">{% Tutorial description paragraph 2 %}</span></span></p>
-  <p align="justify"> <span lang="en-US"><strong>Software tools</strong></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">The tutorial starts with a brief demonstration of a real-world example, followed by two hands-on parts: the first introduces the respective software tools and the second combines them to cover major steps of the research process. The show case is the construction and simulation of a structurally detailed large-scale network model [1,2,3] in a collaborative and reproducible fashion. To this end, a simulation engine is combined with modern tools for the digital representation of workflows.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">The first hands-on part provides introductions to the tools used throughout the workflow, i.e. the NEural Simulation Toolkit NEST [4], the development platform GitHub in the context of modeling and the workflow management system snakemake [5]. The second part of the tutorial continues the hands-on work and brings the tools together to construct a simplified workflow following the introductory example. More explicitly, we will</span></span></p>
+<ul>
+<li>set up a snakemake-based workflow from the underlying anatomical data to visualizations of the simulation results.</li>
+<li>embed NEST into the workflow to enable large-scale simulations.</li>
+<li>prepare the workflow to be executed on a high performance computing system.</li>
+</ul>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Finally, more advanced features of NEST are demonstrated: The NEST Modeling Language [6], rate-based neuron models [7] and recent advances in the simulation technology [8].</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><a href="https://youtu.be/YsH3BcyZBcU" target="_blank">This video</a> gives an impression on what you will be able to do in your own research after attending the tutorial.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">The tutorial does not assume any prior knowledge of NEST, git or snakemake. For the hands-on parts, it is recommended that participants have a GitHub account and a Linux/Mac based environment available, ideally with a running NEST installation [9]. Nevertheless, participation is also possible without engaging in hands-on activities by following the live presentations only.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] Schmidt M, Bakker R, Hilgetag CC, Diesmann M, van Albada SJ (2018) Multi-scale account of the network structure of macaque visual cortex. Brain Struct. Func. 223(3):1409-1435</li>
+<li>[2] Schmidt M, Bakker R, Shen K, Bezgin G, Diesmann M, van Albada SJ (2018) A multi-scale layer-resolved spiking network model of resting-state dynamics in macaque visual cortical areas. PLOS CB 14(10):e1006359</li>
+<li>[3] https://inm-6.github.io/multi-area-model/</li>
+<li>[4] Linssen, Charl et al. (2018) NEST 2.16.0. Zenodo. https://doi.org/10.5281/zenodo.1400174</li>
+<li>[5] Köster J, Rahmann S (2012) Snakemake - A scalable bioinformatics workflow engine. Bioinformatics 28(19):2520-2522</li>
+<li>[6] Plotnikov D, Rumpe B, Blundell I, Ippen T, Eppler JM, Morrison A (2016) "NESTML: a modeling language for spiking neurons." In Modellierung 2016, March 2-4 2016, Karlsruhe, Germany. 93–108. doi:10.5281/zenodo.1412345</li>
+<li>[7] Hahne J, Dahmen D, Schuecker J, Frommer A, Bolten M, Helias M, Diesmann M (2017) Integration of continuous time dynamics in a spiking neural network simulator. Front. Neuroinform 11:34</li>
+<li>[8] Jordan J, Ippen T, Helias M, Kitayama I, Sato M, Igarashi J, Diesmann M, Kunkel S (2018) Extremely scalable spiking neuronal network simulation code: from laptops to exascale computers. Front. Neuroinform 12:2</li>
+<li>[9] http://www.nest-simulator.org/installation/</li>
+</ul>
 </blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T2"></a><span style="color: #800000;">T2: Building biophysically detailed neuronal models: from molecules to networks (NEURON and NetPyNE).</span></span></span></h3>
+<ul>
+<li>Dr. Robert A McDougal (Yale University, USA).</li>
+<li>Dr. Salvador Dura-Bernal (SUNY Downstate, USA)</li>
+<li>Dr. William W Lytton (SUNY Downstate, USA)</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">This tutorial discusses implementing biophysically detailed models of neuronal processes across multiple spatial scales. We begin by exploring ModelDB (modeldb.yale.edu), a discovery and exploration tool for computational neuroscience models, to see the breadth of existing models, to graphically explore their structure, to run models, and to extract components for reuse. We then introduce NEURON (neuron.yale.edu), a Python (e.g. anaconda.com) scriptable neuroscience simulation environment.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">The bulk of the tutorial consists of alternating periods of background, NEURON syntax, examples, and hands on exercises covering the implementation of models at four key scales: (1) intracellular dynamics (e.g. calcium buffering, protein interactions), (2) single neuron electrophysiology (e.g. action potential propagation), (3) neurons in extracellular space (e.g. spreading depression), and (4) networks of neurons. For network simulations, we will use NetPyNE (netpyne.org), a high-level interface to NEURON supporting both programmatic and GUI specification that facilitates the development, parallel simulation, and analysis of biophysically detailed neuronal networks. We conclude with an example exploring the role of intracellular dynamics in shaping network activity.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Basic familiarity with Python is recommended. No prior knowledge of NEURON or NetPyNE is required, however participants are encouraged to download and install each of these packages prior to the tutorial.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] NEURON: <a href="https://neuron.yale.edu/" target="_blank">https://neuron.yale.edu/</a></li>
+<li>[2] NetPyNE: <a href="www.netpyne.org" target="_blank">www.netpyne.org</a></li>
+<li>[3] NetPyNE-UI: <a href="https://github.com/MetaCell/NetPyNE-UI" target="_blank">https://github.com/MetaCell/NetPyNE-UI</a></li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T3"></a><span style="color: #800000;">T3: Model-based analysis of brain connectivity from neuroimaging data: estimation, analysis and classification.</span></span></span></h3>
+<ul>
+<li>Andrea Insabato, Universidad de Valencia (Valencia, Spain).</li>
+<li>Adrià Tauste-Campo, BarcelonaBeta (Barcelona, Spain).</li>
+<li>Matthieu Gilson, Universitat Pompeu Fabra (Barcelona, Spain).</li>
+<li>Gorka Zamora-López, Universitat Pompeu Fabra (Barcelona, Spain)</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Brain connectivity analysis has become central in nowadays neuroscience. We propose a systematic overview of the abundance of methods in this ever-growing field. This is necessary to answer questions like “how should I pick an appropriate connectivity measure for this type of experimental data?” or “how should I interpret the outcomes of my connectivity analysis?”, which are not usually addressed by textbooks or papers.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">In this one-day tutorial we will offer a guide to navigate through the main concepts and methods of this field, including hands-on coding exercises. The morning session will be devoted to theory and concepts. We will focus on (i) time series analysis methods to estimate connectivity from BOLD fMRI data (extension to other types of data is possible), (ii) network theory to describe and analyze estimated networks and (iii) machine learning techniques to relate connectivity to cognitive states (e.g. tasks performed by subjects) or to pathological states (e.g. Alzheimer's disease or MCI). Theory and concepts will be presented along with simple code examples. The afternoon session will comprise of a hands-on session, focusing on the applications of the reviewed connectivity methods to fMRI data. All code examples and exercises will be in Python using Jupyter notebooks, extending the existing framework [1] to incorporate recent developments [2].</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] <a href="http://github.com/MatthieuGilson/WBLEC_toolbox" target="_blank">http://github.com/MatthieuGilson/WBLEC_toolbox</a></li>
+<li>[2] Gilson M, Zamora-López G, Pallarés V, Adhikari MH, Senden M, Tauste Campo A, Mantini D, Corbetta M, Deco G, Insabato A (bioRxiv) "MOU-EC: model-based whole-brain effective connectivity to extract biomarkers for brain dynamics from fMRI data and study distributed cognition"; doi: https:// doi.org/10.1101/531830</li>
+<li>[3] Lütkepohl, H. (2005). New introduction to multiple time series analysis. Springer Science &amp; Business Media.</li>
+<li>[4] Murphy, K. P. (2012). Machine Learning: a Probabilistic Perspective. MIT Press.</li>
+<li>[5] Wasserman, S. &amp; Faust, K. (1999). Social network analysis: Methods and Applications. Cambridge University Press.</li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span></span></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T4"></a><span style="color: #800000;">T4: Simulating Multiple Interacting Neural Populations using Population Density Techniques (using MIIND).</span></span></span></h3>
+<ul>
+<li>Hugh Osborne (University of Leeds, UK).</li>
+<li>Marc de Kamps (University of Leeds, UK).</li>
+<li>Lukas Deutz (University of Leeds, UK).</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Neural behaviour at the largest of scales is often modelled using mean rate based techniques which use a small number of variables and fitted parameters to capture the dynamics of a population of neurons. This is both time efficient and an appropriate level of complexity to answer many questions about brain dynamics. However, sometimes it is desirable to be able to relate the population behaviour to the behaviour of its constituent neurons and most rate based techniques do not do this rigorously. Population Density Techniques [1-3] are a rigorous method for taking an individual point neuron model and simulating the dynamics of a population, without the need to simulate individual cells. These methods have been shown to replicate firing rates accurately, compared to direct spike-based simulations, even for small populations [1,2]. In this tutorial we start with presenting the theory of PDTs, their strengths and weaknesses.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Then we present MIIND [4], a neural simulation platform designed for modelling the interactions between multiple populations of neurons. Unlike other PDT systems like DIPDE [5], MIIND uses a two dimensional geometric population density technique [6,7]. We will introduce this technique and guide participants through setting up individual neural populations. To solidify their understanding, they may then familiarise themselves with the simulation and analysis workflow and produce movies of each population as it develops over time in the neuron model’s state space. This foundation will pave the way towards modelling a large scale network of populations using MIIND’s XML style language. Such simulations can run on a single PC for smaller networks and for larger ones on a GPGPU device or a cluster. We will make an Ubuntu Docker available so that participants can follow the demonstration on their own laptop.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">If you have a simulation you wish to try to adapt to a population density approach, we would be happy to give advice.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>MIIND source code and documentation: <a href="https://github.com/dekamps/miind" target="_blank">https://github.com/dekamps/miind</a></li>
+<li>MIIND prepackaged download and written tutorial: <a href="http://miind.sourceforge.net/" target="_blank">http://miind.sourceforge.net/</a></li>
+<li>MIIND Docker Image (dockerhub): hughosborne/miind</li>
+<li>Example population movie: <a href="https://drive.google.com/open?id=1CxDcXZWgBZysZDNMQVSzL_02PvsxetY4" target="_blank">https://drive.google.com/open?id=1CxDcXZWgBZysZDNMQVSzL_02PvsxetY4</a></li>
+<li>[5] Website: © 2015 Allen Institute for Brain Science. DiPDE Simulator [Internet]. Available from: <a href="https://github.com/AllenInstitute/dipde" target="_blank">https://github.com/AllenInstitute/dipde.</a></li>
+<li>[6] de Kamps, M., 2013. A generic approach to solving jump diffusion equations with applications to neural populations. arXiv preprint arXiv:1309.1654.</li>
+<li>[7] de Kamps, M., Elle Lepperød, M. and Lai, Y. M. 2019 Computational geometry for modeling neural populations: from visualization to simulation 2019, Accepted for publication by Plos CB, https://www.biorxiv.org/content/10.1101/275412v5.</li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span></span></span></span></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T5"></a><span style="color: #800000;">T5: Simulating dendrites at different levels of abstraction.</span></span></span></h3>
+<ul>
+<li>Everton J. Agnes (University of Oxford, UK).</li>
+<li>Spyridon Chavlis (FORTH, Greece).</li>
+<li>Athanasia Papoutsi (FORTH, Greece).</li>
+<li>William F. Podlaski (University of Oxford, UK)</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Dendritic computations are the result of the complex interactions between active ion channel conductances, morphology and synaptic dynamics. Although many of the functional properties of dendrites have been explored, their complete characterization is inaccessible with current experimental techniques. Complementary to experimental work, modeling tools can provide a framework for understanding the relationship between dendritic physiology and function at the single neuron and network level. In this tutorial, we will focus on the exploration of dendritic dynamics at different levels of abstraction. We will begin with detailed modeling, presenting the fundamentals of the passive and active properties of dendrites, and then move towards more phenomenological models which abstract away much of the detail while keeping the key features of dendritic processing intact. Throughout, we will make reference to relevant tools available in the field, including the ICGenealogy database for neuronal ion channel models, the NEURON simulator for detailed multi-compartmental modeling, and the BRIAN simulator for simulating abstract networks of neurons.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">The proposed outline of the tutorial is as follows:</span></span></p>
+<ol type="a">
+<li>Details of dendritic computations:</li>
+<ol>
+<li>Passive properties, synaptic dynamics, and ion channels. Demonstration on how to model the kinetics of ion channels (e.g., Hodgkin-Huxley, other voltage-dependent and calcium-dependent currents, and AMPA and NMDA receptor dynamics), and fitting to experimental data. Demonstration of ICGenealogy as a tool for ion channel model discovery and comparison.</li>
+<li>NEURON platform. Exploration of mod files; simulations that show basic dendritic computations. Brief discussion of model sharing platforms such as NeuroMorpho, ModelDB and OpenSourceBrain.</li>
+</ol>
+<li>Simplifying dendritic dynamics:</li>
+<ol>
+<li>BRIAN platform. Implementation of dendritic compartments, ion channels (as 1a) and simulator functionality.</li>
+<li>Simplified dendrites. Exploration of phenomenological single compartment dynamics that reproduce complex dendritic properties.</li>
+<li>Networks of simplified neurons. Building computationally efficient networks with single neurons outlined in 1a, 1b, 2a, and 2b.</li>
+</ol></ol>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">The tutorial will incorporate mathematical descriptions and hands-on simulations.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] Stuart, G, Spruston, N &amp; Hausser, M (2008). Dendrites. Oxford Univ. Press.</li>
+<li>[2] Gerstner, W, Kistler, W M, Naud, R &amp; Paninski, L (2014). Neuronal dynamics: From single neurons to networks and models of cognition. Cambridge Univ. Press.</li>
+<li>[3] ICGenealogy: <a href="https://icg.neurotheory.ox.ac.uk/" target="_blank">https://icg.neurotheory.ox.ac.uk/</a></li>
+<li>[4] Python tutorial (basic) <a href="https://docs.python.org/2/tutorial/" target="_blank">https://docs.python.org/2/tutorial/</a></li>
+<li>[5] BRIAN tutorial <a href="https://brian.readthedocs.io/en/1.4.3/tutorials.html" target="_blank">https://brian.readthedocs.io/en/1.4.3/tutorials.html</a></li>
+<li>[6] NEURON tutorial <a href="http://web.mit.edu/neuron_v7.4/nrntuthtml/index.html" target="_blank">http://web.mit.edu/neuron_v7.4/nrntuthtml/index.html</a></li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span></span></span></span></span></span></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T6"></a><span style="color: #800000;">T6: Field theory of neuronal networks.</span></span></span></h3>
+<ul>
+<li>Dr. Moritz Helias (Jülich Research Centre and JARA, Germany).</li>
+<li>Dr. David Dahmen (Jülich Research Centre and JARA, Germany).</li>
+<li>Dr. Andrea Crisanti (University “La Sapienza”, Italy).</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Neural networks of the brain form one of the most complex systems we know. Many qualitative features of the emerging collective phenomena, such as correlated activity, stability, response to inputs, chaotic and regular behavior, can, however, be understood in simple models that are accessible with tools from statistical physics.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">This tutorial is an introduction into the methods behind contemporary developments in the theory of large neural networks. Starting from very basic principles of moments and cumulants of scalar quantities and their generating functions, we introduce the notion of path integrals for dynamic variables and present systematic derivations of low-dimensional self-consistency equations for the statistics of activities in disordered neural networks. These methods not only reproduce results of heuristic mean-field approaches, but also yield systematic recipes to the analysis of stability and finite size corrections. We further show that the same field theoretical language allows systematic coarse-graining of neural network models in space and time to bridge multiple spatio-temporal scales. Finally, we turn the view from activities to connections and present Gardner’s theory of connections that illustrates that the aforementioned techniques for network dynamics can be used to evaluate the functional performance of feed-forward neural networks in binary classification tasks.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Various techniques, such as path integrals, disorder averages, Lyapunov exponents, replica theory, renormalization group methods etc, are shown with example applications to combine the theory construct with modern neuroscientific questions on memory capacity, criticality and chaos, as well as diversity of dynamics.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">This tutorial does not require background knowledge of statistical physics.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] Helias, Dahmen (2019) Statistical field theory for neural networks, arXiv http://arxiv.org/abs/1901.10416</li>
+<li>[2] Sompolinsky, Crisanti, Sommers (1988) Chaos in Random Neural Networks, Phys Rev Lett https://link.aps.org/doi/10.1103/PhysRevLett.61.259</li>
+<li>[3] Crisanti, Sompolinsky (2018) Path Integral Approach to Random Neural Networks, Phys Rev E 10.1103/PhysRevE.98.062120</li>
+<li>[4] Dahmen, Grün, Diesmann, Helias (2018) Two types of criticality in the brain, arXiv https://arxiv.org/abs/1711.10930</li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span></span></span></span></span></span></span></span></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T7"></a><span style="color: #800000;">T7: Introduction to high-performance neurocomputing.</span></span></span></h3>
+<ul>
+<li>Dr. Tadashi Yamazaki (RIKEN, Japan).</li>
+<li>Dr. Jun Igarashi (RIKEN, Japan).</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Computational power of supercomputers is steadily increasing year by year, and is expected to reach at 1 exaflops in 202X. High-performance computing (HPC) is the use of supercomputers and parallel computing techniques to solve complex computational problems. Software tools in computational neuroscience such as NEURON and NEST simulators harness some of the unprecedented computational power of supercomputers. Nevertheless, it would still be desirable to have low-level programming skills in C language with the knowledge of parallel computing libraries such as OpenMP, MPI, and CUDA to customize existing tools for better performance and build new tools for novel purposes. Moreover, such skills will be useful for spike-based neuromorphic computing.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">In this tutorial, we will introduce various parallel computing techniques for large-scale neural network simulations. We will start with a single spiking neuron simulation, and build a network of the neurons known as Brunel's balanced network. We will give a short lecture on numerical methods to solve ordinary differential equations as well. Then, we will parallelize the network simulations using various techniques including OpenMP, MPI, CUDA, and OpenCL. We will measure the computational time and confirm how these techniques accelerate the numerical simulations.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">This is a hands-on tutorial. The audiences must bring their laptop computers to log into cluster machines in the lecturers' lab via ssh. Therefore, the audiences are expected to have basic programming skills in C and experience on Linux and ssh.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">This tutorial is supported by MEXT Post-K Exploratory Challenge #4, MEXT Grant-in-Aid for High-Performance Computing with General Purpose Computers (Research and Development in the Next-Generation Area, Large-Scale Computational Sciences with Heterogeneous Many-Core Computers), and NEDO Next Generation AI and Robot Core Technology Development.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] <a href="https://numericalbrain.org/en" target="_blank">https://numericalbrain.org/en</a></li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T8"></a><span style="color: #800000;">T8: Biophysical modeling of extracellular potentials (using LFPy).</span></span></span></h3>
+<ul>
+<li>Dr. Gaute T. Einevoll (Norwegian University of Life Sciences &amp; University of Oslo, Norway).</li>
+<li>Dr. Espen Hagen (University of Oslo, Norway)</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">While extracellular electrical recordings have been one of the main workhorses in electrophysiology, the interpretation of such recordings is not trivial [1,2,3], as the measured signals result of both local and remote neuronal activity. The recorded extracellular potentials in general stem from a complicated sum of contributions from all transmembrane currents of the neurons in the vicinity of the electrode contact. The duration of spikes, the extracellular signatures of neuronal action potentials, is so short that the high-frequency part of the recorded signal, the multi-unit activity (MUA), often can be sorted into spiking contributions from the individual neurons surrounding the electrode [4]. No such simplifying feature aids us</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">In the tutorial we will go through the biophysics of extracellular recordings in the brain, a scheme for biophysically detailed modeling of extracellular potentials and the application to modeling single spikes [5], MUAs [6] and LFPs, both from single neurons [7] and populations of neurons [8], LFPy (LFPy.rtfd.io) [9], a versatile tool based on Python and the NEURON simulation environment [10] (www.neuron.yale.edu) for calculation of extracellular potentials around neurons and networks of neurons, as well as corresponding electroencephalography (EEG) and magnetoencephalography (MEG) signals.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] KH Pettersen et al., “Extracellular spikes and CSD” in Handbook of Neural Activity Measurement, Cambridge (2012)</li>
+<li>[2] G Buzsaki et al., Nat Rev Neurosci 13:407 (2012)</li>
+<li>[3] GT Einevoll et al., Nat Rev Neurosci 14:770 (2013); B Pesaran et al, Nat Neurosci 21:903 (2018)</li>
+<li>[4] GT Einevoll et al., Curr Op Neurobiol 22:11 (2012)</li>
+<li>[5] G Holt, C Koch, J Comp Neurosci 6:169 (1999); J Gold et al., J Neurophysiol 95:3113 (2006); KH Pettersen and GT Einevoll, Biophys J 94:784 (2008)</li>
+<li>[6] KH Pettersen et al., J Comp Neurosci 24:291 (2008)</li>
+<li>[7] H Lindén et al., J Comp Neurosci 29: 423 (2010); TV Ness et al, J Physiol 594:3809 (2016)</li>
+<li>[8] H Lindén et al., Neuron 72:859 (2011); S Łęski et al., PLoS Comp Biol 9:e1003137 (2013); E Hagen et al., Cereb Cortex 26:4461 (2016); TV Ness et al., J Neurosci 38:6011 (2018)</li>
+<li>[9] H Lindén et al., Front Neuroinf 7:41 (2014) E Hagen et al., Front Neuroinf 12:92 (2018)</li>
+<li>[10] ML Hines et al., Front Neuroinf 3:1 (2009)</li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T9"></a><span style="color: #800000;">T9: Modeling neural systems in MATLAB using the DynaSim Toolbox.</span></span></span></h3>
+<ul>
+<li>Dr. Jason Sherfey (MIT, USA).</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">This tutorial will help participants implement and explore neural models in MATLAB. It will include an introduction to neural modeling, hands-on exercises, and a hackathon where participants can work together with tool developers to implement models that are relevant to their research. The tutorial will focus on using DynaSim, which is an open-source MATLAB/GNU Octave Toolbox for rapid prototyping of neural models and batch simulation management. The tutorial will show how models can be built and explored using either MATLAB scripts or the DynaSim graphical interface, the latter being especially useful as a teaching tool and for those with limited experience with mathematics or programming. The hands-on exercises will demonstrate how DynaSim can be used to rapidly explore the dynamics of multi-compartment neurons, spike-timing-dependent plasticity in neural circuits, and systems of interacting networks during a simulated cognitive task. They will show further how to optimize simulations with DynaSim using a combination of code compilation and parallel computing. The exercises will be followed by a hackathon where participants will be able to further explore DynaSim features using models from the exercises or implement their custom models with assistance from the developers of DynaSim.</span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">The tutorial does not assume any prior experience with DynaSim. However, it is recommended that participants install MATLAB on their laptops beforehand.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] Software tools: <a href="http://dynasimtoolbox.org" target="_blank">http://dynasimtoolbox.org</a></li>
+<li>[2] Sherfey, Jason S., et al. "DynaSim: A MATLAB Toolbox for Neural Modeling and Simulation." Frontiers in neuroinformatics 12 (2018): 10.</li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
+<h3 align="justify"><span style="font-family: Arial, serif;"><span lang="en-US"><a name="T10"></a><span style="color: #800000;">T10: Design and sensitivity analysis of neural models (using PyRates and PySense).</span></span></span></h3>
+<ul>
+<li>Richard Gast (MPI for Human Cognitive and Brain Sciences, Germany).</li>
+<li>Dr. Konstantin Weise (TU Ilmenau, Germany).</li>
+<li>Daniel Rose (MPI for Human Cognitive and Brain Sciences, Germany).</li>
+<li>Dr. Thomas R. Knösche (MPI for Human Cognitive and Brain Sciences and TU Ilmenau, Germany).</li>
+</ul>
+<blockquote>
+<p><span style="font-family: Arial, serif;"><span lang="en-US"><strong>Description of the tutorial</strong></span></span></p>
+<p><span style="font-family: Arial, serif;"><span lang="en-US">Efficient software solutions for building and analyzing neural models are of tremendous value to the field of computational neuroscience. In this tutorial, we will introduce two open source Python tools that allow for a generic model definition, parallelized exploration of model parameter spaces and analysis of model uncertainties and sensitivities. On the one hand, PyRates [1] provides an intuitive user interface to define computational models at various spatial scales and simulate their behavior via a powerful, tensorflow-based backend [2]. On the other hand, PySense [3], allows for the quantification of model sensitivities and uncertainties to changes in their parameters via a non-intrusive generalized polynomial chaos (gPC) expansion [4]. Consequently, the tutorial will be split into two parts. We will start the first part by giving a theoretical introduction to neural population models. Next, we will teach participants how to implement such models in PyRates and extend them to neural networks with different spatial scales. We will then investigate the complex dependency of a models’ behavior on its multidimensional parameter space and demonstrate the difficulty to analyze model sensitivities in such spaces. In the second part, we will introduce the gPC as an efficient solution for quantifying model sensitivities. We will showcase how the gPC can be coupled with the previously implemented population models and how it can be used to identify their most influential parameters. To this end, we will go through a hands-on example of a sensitivity analysis using PyRates and PySense. At the end of the tutorial, participants will have gained an understanding of a) neural population models, b) how to implement them in PyRates, c) how the complex relationship between model behavior and parametrization can be approximated via a GPC expansion and e) how a GPC-based model sensitivity analysis can be implemented in PySense.</span></span></p>
+<p align="justify"> <span lang="en-US"><strong>Background reading and software tools</strong></span></p>
+<ul>
+<li>[1] <a href="https://github.com/pyrates-neuroscience/PyRates" target="_blank">https://github.com/pyrates-neuroscience/PyRates</a></li>
+<li>[2] Gast, R., Knoesche, T. R., Daniel, R., Moeller, H. E., and Weiskopf, N. (2018). “P168 pyrates: A python framework for rate-based neural simulations..” BMC Neuroscience. 27th Annual Computational Neuroscience Meeting (CNS*2018): Part One.</li>
+<li>[3] <a href="https://github.com/konstantinweise/PySense" target="_blank">https://github.com/konstantinweise/PySense</a></li>
+<li>[4] Saturnino, G. B., Thielscher, A., Madsen, K. H., Knoesche, T. R., and Weise, K. (2018). “A principled approach to conductivity uncertainty analysis in electric field calculations.” NeuroImage (in press). DOI:https://doi.org/10.1016/j.neuroimage.2018.12.053.</li>
+</ul>
+</blockquote>
+<span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><span style="font-family: Arial, serif;"><span lang="en-US"><a href="#TutorialList">Back to top</a> </span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
