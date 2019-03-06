@@ -9,7 +9,7 @@ The Board
 
 The complete registration fee is waived. All Board members are OCNS members, so
 we do not use vouchers for this group. The relevant forms are set up so that
-the prices for this group is null.
+the prices for this group are null.
 
 The Programme Committee
 ========================
@@ -24,6 +24,12 @@ The workshop registration fee is waived.
 These attendees also use vouchers.
 
 Tutorial organisers
+====================
+
+The complete registration fee is waived.
+These attendees also use vouchers.
+
+Local organisers
 ====================
 
 The complete registration fee is waived.
