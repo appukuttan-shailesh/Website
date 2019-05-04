@@ -12,6 +12,7 @@ Author: Ankur Sinha <sanjay DOT ankur AT gmail DOT com>
 
 import pandas as pd
 import sys
+import re
 
 
 def check_user_registration(confmaster_submissions, confmaster_users,
@@ -19,45 +20,25 @@ def check_user_registration(confmaster_submissions, confmaster_users,
     """
     Check whether first authors on confmaster are registered on memberclicks.
 
+    I had initially used pandas, but using dataframes doesn't work too well
+    when you have a table with variable number of columns which we do here
+    because a submission can have any number of co-authors. That needs a list
+    within the dataframe, and a "join" with the IDs of that list. This isn't
+    simple to do with  Pandas. Much simpler to do manually like a db.
+
     :confmaster_submissions: submission data from Confmaster (no e-mails)
     :confmaster_users: User data export from Confmaster (needed for e-mails)
     :memberclicks_users: Conference registration export from memberclicks
     :returns: TODO
     """
-    # All users on cm_users
-    cm_users = pd.read_csv(confmaster_users)
-    print("Confmaster user data: {} rows read".format(len(cm_users.index)))
+    # Set up files
+    registered_fname = "2019-Registered.txt"
+    not_registered_fname = "2019-Not-Registered.txt"
 
-    # Select from but 'email' is REQUIRED:
-    #  (['UserID', 'First Name', 'Last Name', 'Affiliation 1', 'Affiliation 2',
-    #  'Country', 'Keywords', 'Author of', 'Dynamic Fields', 'email',
-    #  'Tracks'],
-    cm_users = cm_users[['email', 'UserID', 'Country']]
+    registered_fd = open(registered_fname, 'w')
+    not_registered_fd = open(not_registered_fname, 'w')
 
-    # All submissions on cm_users that requested travel awards
-    abs_subs = pd.read_csv(confmaster_submissions)
-    # Select from these, but 'ContactAuthor' is REQUIRED since it contains
-    # their UserID:
-    #  (['PaperID', 'Authors', 'ContactAuthor', 'Paper Type', 'Keywords',
-    #  'Avg', 'Misc', 'Title' ])
-    abs_subs = abs_subs[['PaperID', 'ContactAuthor']]
-    print("Submissions data: {} rows read".format(len(abs_subs)))
-    # ContactAuthor column in submissions is in the form:
-    # First Name (#userid)
-    # So we need to extract the userid
-    abs_subs['UserID'] = abs_subs['ContactAuthor'].str.extract('(?P<userid>\d+)')
-    abs_subs['UserID'] = abs_subs.UserID.astype(int)
-
-    cm_abs_subs = pd.merge(
-        abs_subs, cm_users, left_on='UserID', right_on='UserID'
-    )
-    print("Confmaster users AND submission data: {} rows".format(len(cm_abs_subs.index)))
-    cm_abs_subs.sort_values('UserID', inplace=True)
-    cm_abs_subs.to_csv('Confmaster-with-ids-and-emails.csv')
-    print("Wrote CM + TA to file")
-    print()
-
-    # All registered members from m_users
+    # Registered users on memberclicks
     m_users = pd.read_csv(memberclicks_users)
     print("Memberclicks data: {} rows read".format(len(m_users.index)))
     # Select from, but 'Username' and 'Email' are REQUIRED
@@ -76,26 +57,112 @@ def check_user_registration(confmaster_submissions, confmaster_users,
     #  'MembershipTypeWhenApplied', 'Electronic Mail Non-Member',
     #  'Years Dues Paid', 'RegistrationYear'],
 
-    m_users = m_users[
-        ['Username', 'Contact Name', 'Group', 'Gender', 'Job Title',
-         'Institution', 'Dept.', 'Laboratory', 'Country', 'Email'
-         ]]
-    # intersection of cm_users users and m_users registrants
-    # Please note the names of the two e-mail fields
-    merged_users_username = pd.merge(
-        m_users, cm_abs_subs, how='inner', left_on='Username',
-        right_on='email')
-    merged_users_email = pd.merge(
-        m_users, cm_abs_subs, how='inner', left_on='Email',
-        right_on='email')
+    # We only need e-mails to check for registration
+    m_users = m_users['Email'].values
 
-    merged_users = pd.concat(
-        [merged_users_username, merged_users_email]
-    ).drop_duplicates().reset_index(drop=True)
+    # All users on Confmaster
+    cm_users = pd.read_csv(confmaster_users)
+    print("Confmaster user data: {} rows read".format(len(cm_users.index)))
 
-    print("CM + Memberclicks: {} rows".format(len(merged_users.index)))
-    merged_users.sort_values('UserID', inplace=True)
-    merged_users.to_csv('Result.csv')
+    # Select from but 'email' is REQUIRED:
+    #  (['UserID', 'First Name', 'Last Name', 'Affiliation 1', 'Affiliation 2',
+    #  'Country', 'Keywords', 'Author of', 'Dynamic Fields', 'email',
+    #  'Tracks'],
+    cm_users = cm_users[['email', 'UserID']]
+    # Convert to a dict
+    # { 'userid' : 'email' }
+    cm_users = cm_users.values
+    cm_users_dict = {}
+    for user in cm_users:
+        cm_users_dict[str(user[1])] = user[0]
+
+    # All submissions on cm_users that requested travel awards
+    abs_subs = pd.read_csv(confmaster_submissions)
+    # Select from these, but 'ContactAuthor' is REQUIRED since it contains
+    # their UserID:
+    #  (['PaperID', 'Authors', 'ContactAuthor', 'Paper Type', 'Keywords',
+    #  'Avg', 'Misc', 'Title' ])
+    abs_subs = abs_subs[['PaperID',  'Authors', 'ContactAuthor']]
+    print("Submissions data: {} rows read".format(len(abs_subs)))
+    # Convert to numpy so I can iterate
+    abs_subs = abs_subs.values
+
+    correct_submissions = []
+    incorrect_submissions = []
+
+    for row in abs_subs:
+        paperid = row[0]
+        authors = row[1]
+        first_author = row[2]
+
+        first_author = get_author_info(first_author)
+        # Fetch e-mail from user list
+        # Only one first author here
+        for author in first_author:
+            userid = [*author][0]
+            if userid in cm_users_dict:
+                email = cm_users_dict[[*author][0]]
+                author[userid]['email'] = email
+                if email in m_users:
+                    correct_submissions.append(paperid)
+                    print("\n** Paper ID: {} **".format(paperid),
+                          file=registered_fd)
+                    print("First author {} ({}) is registered".format(
+                        author[userid]['name'], author[userid]['email']),
+                          file=registered_fd)
+
+                # else, check other authors
+                else:
+                    incorrect_submissions.append(paperid)
+                    print("\n** Paper ID: {} **".format(paperid),
+                          file=not_registered_fd)
+                    print("First author {} ({}) is NOT registered".format(
+                        author[userid]['name'], author[userid]['email']),
+                          file=not_registered_fd)
+
+                    print("Other authors status:", file=not_registered_fd)
+
+                    # First author is repeated here, so remove it
+                    authors = get_author_info(authors)
+                    del authors[0]
+
+                    for author in authors:
+                        userid = [*author][0]
+                        if userid in cm_users_dict:
+                            email = cm_users_dict[[*author][0]]
+                            author[userid]['email'] = email
+                            print("{} ({}) is registered".format(
+                                author[userid]['name'],
+                                author[userid]['email']),
+                                  file=not_registered_fd)
+
+                        else:
+                            print("{} ({}) is not registered".format(
+                                author[userid]['name'],
+                                author[userid]['email']),
+                                  file=not_registered_fd)
+    registered_fd.close()
+    not_registered_fd.close()
+
+
+def get_author_info(authorlist):
+    """Get author names and ids from a confmaster list
+
+    :authorlist: string containing list of authors each of form '<name> (#id)'
+    :returns: dict
+    """
+    author_regex = r'[\w#() 0-9\-\.]+'
+    authorinfo = re.findall(author_regex, authorlist)
+    result = []
+    for author in authorinfo:
+        authorinfo_dict = {}
+        tokens = re.findall(r'[\.\w-]+', author)
+        name = tokens[:-1]
+        userid = tokens[-1]
+        authorinfo_dict[str(userid)] = {'name': name}
+        result.append(authorinfo_dict)
+
+    return result
 
 
 if __name__ == "__main__":
