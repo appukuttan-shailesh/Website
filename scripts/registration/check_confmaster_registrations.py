@@ -40,6 +40,7 @@ def check_user_registration(confmaster_submissions, confmaster_users,
 
     # Registered users on memberclicks
     m_users = pd.read_csv(memberclicks_users)
+    m_users['Email'] = m_users['Email'].str.lower()
     print("Memberclicks data: {} rows read".format(len(m_users.index)))
     # Select from, but 'Username' and 'Email' are REQUIRED
     # (['Username', 'Expiration', 'Contact Name', 'Email', 'Group',
@@ -101,7 +102,7 @@ def check_user_registration(confmaster_submissions, confmaster_users,
         for author in first_author:
             userid = [*author][0]
             if userid in cm_users_dict:
-                email = cm_users_dict[[*author][0]]
+                email = cm_users_dict[[*author][0]].lower()
                 author[userid]['email'] = email
                 if email in m_users:
                     correct_submissions.append(paperid)
@@ -129,7 +130,7 @@ def check_user_registration(confmaster_submissions, confmaster_users,
                     for author in authors:
                         userid = [*author][0]
                         if userid in cm_users_dict:
-                            email = cm_users_dict[[*author][0]]
+                            email = cm_users_dict[[*author][0]].lower()
                             author[userid]['email'] = email
                             print("{} ({}) is registered".format(
                                 author[userid]['name'],
