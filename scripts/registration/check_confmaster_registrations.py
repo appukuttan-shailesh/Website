@@ -132,16 +132,16 @@ def check_user_registration(confmaster_submissions, confmaster_users,
                         if userid in cm_users_dict:
                             email = cm_users_dict[[*author][0]].lower()
                             author[userid]['email'] = email
-                            print("{} ({}) is registered".format(
-                                author[userid]['name'],
-                                author[userid]['email']),
-                                  file=not_registered_fd)
-
-                        else:
-                            print("{} ({}) is not registered".format(
-                                author[userid]['name'],
-                                author[userid]['email']),
-                                  file=not_registered_fd)
+                            if email in m_users:
+                                print("{} ({}) is registered".format(
+                                    author[userid]['name'],
+                                    author[userid]['email']),
+                                      file=not_registered_fd)
+                            else:
+                                print("{} ({}) is not registered".format(
+                                    author[userid]['name'],
+                                    author[userid]['email']),
+                                      file=not_registered_fd)
     registered_fd.close()
     not_registered_fd.close()
 
