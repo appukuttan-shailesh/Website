@@ -37,11 +37,12 @@ The following user-groups are not linked to a user.
 
 .. csv-table::
     :header: **Group**, **Purpose**
+    :quote: "
 
     newsletter, OCNS newsletter management group
-    prog{11,12,13,14,15,16,17,2018,2019}, Program committee groups for annual conferences
+    "prog{11,12,13,14,15,16,17,2018,2019}", Program committee groups for annual conferences
     comp-neuro, Comp-neuro discussion group (inactive?)
     pc_rules, ?
-    registration_notifications. ?
+    registration_notifications, ?
     comp-neuro-test, ?
 
