@@ -28,6 +28,9 @@ def check_user_registration(confmaster_submissions, confmaster_users,
 
     :confmaster_submissions: submission data from Confmaster (no e-mails)
     :confmaster_users: User data export from Confmaster (needed for e-mails)
+        Note that this must be the "saved member profile search", and not the
+        receipt-export. The receipt-export only specifies the username-email,
+        not the contact-email which we need to check against.
     :memberclicks_users: Conference registration export from memberclicks
     :returns: TODO
     """
