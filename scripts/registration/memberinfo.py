@@ -8,7 +8,7 @@ https://classic.memberclicks.com/hc/en-us/articles/360016335371-User
 Note that we use "classic" memberclicks which does not provide the extensive
 API that the new version seems to provide.
 
-File: util.py
+File: memberinfo.py
 
 Copyright 2019 Ankur Sinha
 Author: Ankur Sinha <sanjay DOT ankur AT gmail DOT com>
