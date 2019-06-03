@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Get information about first authors that submitted abstracts and requested
-travel awards from Memberclicks.
+Verify that authors from Confmaster submissions have registered for the
+conference on Memberclicks.
 
 File: check_confmaster_registrations.py
 
