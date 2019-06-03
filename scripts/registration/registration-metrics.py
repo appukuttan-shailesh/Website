@@ -33,7 +33,9 @@ Author: Ankur Sinha <sanjay DOT ankur AT gmail DOT com>
 
 import sys
 import sqlite3
-
+import os
+import textwrap
+import subprocess
 
 class Metrics():
 
@@ -43,18 +45,82 @@ class Metrics():
         """Initialise"""
         self.common_data = '"Email"'
         self.metrics_fn = "Registration-metrics.txt"
+        self.tabs = {
+            "RegReceipts": "registration_receipts",
+            "RegProfiles": "registration_profiles",
+            "AddToRegs": "add_to_registration",
+            "AddExtras": "add_extras"
+        }
+        self.db_name = "CNS2019.sqlite"
 
-    def __connect_to_db(self, db_name):
+    def usage(self):
+        """Print usage instructions
+        :returns: nothing
+
+        """
+        print("Usage: {} db_name | raw_files".format(os.path.basename(__file__)), file=sys.stderr)
+        print(file=sys.stderr)
+        print(textwrap.dedent(
+            """\
+            If using the first form, the database must be populated using
+            this script so that the table names match.
+            """), file=sys.stderr)
+        print(textwrap.dedent(
+            """\
+            If using the second form, the following 4 files musbe be
+            provided in the right order:
+            """), file=sys.stderr)
+
+        print("1. Registration profile export csv", file=sys.stderr)
+        print("2. Registration receipts export csv", file=sys.stderr)
+        print("3. Add to registrations export csv", file=sys.stderr)
+        print("4. Add extras csv", file=sys.stderr)
+
+    def setup_db(self, filenames):
+        """
+        Import csv files into sqlite3 database.
+
+        :filenames: list of files names
+        :returns: TODO
+        """
+        if os.path.isfile(self.db_name):
+            print("{} exists. Removing and re importing".format(self.db_name))
+            subprocess.run(["rm", "-fv", self.db_name], check=True)
+
+        sqlite_init = textwrap.dedent(
+            """\
+            .open {}
+            .mode csv
+            .separator ,
+            .import {} {}
+            .import {} {}
+            .import {} {}
+            .import {} {}
+            .quit \n
+
+            """.format(
+                self.db_name,
+                sys.argv[1], self.tabs["RegReceipts"],
+                sys.argv[2], self.tabs["RegProfiles"],
+                sys.argv[3], self.tabs["AddToRegs"],
+                sys.argv[4], self.tabs["AddExtras"],
+            ))
+
+        subprocess.run(["sqlite3"], input=sqlite_init, text=True, check=True)
+
+    def load_db(self, db_name=None):
         """Connect to sqlite3 database
 
         :db_name: name of sqlite database
         :returns: nothing
 
         """
+        if not db_name:
+            db_name = self.db_name
         self.conn = sqlite3.connect(db_name)
         self.cur = self.conn.cursor()
 
-    def generate_metrics(self, db_name):
+    def generate_metrics(self):
         """Generate metrics using sqlite3 database.
 
         :db_name: name of database file
@@ -62,10 +128,9 @@ class Metrics():
 
         """
         self.metrics_fh = open(self.metrics_fn, 'w')
-        self.__connect_to_db(db_name)
-        #  self.__get_registrant_metrics()
+        self.__get_registrant_metrics()
         #  self.__get_banquet_information()
-        self.__get_t_shirt_requests()
+        #  self.__get_t_shirt_requests()
 
         self.metrics_fh.close()
 
@@ -84,7 +149,7 @@ class Metrics():
         total_count = 0
         for group in groups:
             group_count = 0
-            query = ('SELECT {} from registration_profiles where "Group" == "{}" ORDER BY "Email"'.format(self.common_data, group))
+            query = ('SELECT {} from {} where "Group" == "{}" ORDER BY "Email"'.format(self.common_data, self.tabs['RegReceipts'], group))
             with open("Registrants-from-profiles-{}.txt".format(group), 'w') as fh:
                 for row in self.cur.execute(query):
                     print(row, file=fh)
@@ -98,11 +163,11 @@ class Metrics():
         # form to implement the pricing structure.
         groups = ['Student', 'Faculty', 'Postdoc']
         for group in groups:
-            query = ('SELECT {} from registration_receipts where "Registration Type" == "{}" ORDER BY "Email"'.format(self.common_data, group))
+            query = ('SELECT {} from {} where "Registration Type" == "{}" ORDER BY "Email"'.format(self.common_data, self.tabs['RegReceipts'], group))
             with open("Registrants-from-receipts-{}.txt".format(group), 'w') as fh:
                 for row in self.cur.execute(query):
                     print(row, file=fh)
-        query = ('SELECT {} from registration_receipts where "Registration Type" == "" ORDER BY "Email"'.format(self.common_data))
+        query = ('SELECT {} from {} where "Registration Type" == "" ORDER BY "Email"'.format(self.common_data, self.tabs['RegReceipts']))
         with open("Registrants-from-receipts-members.txt".format(group), 'w') as fh:
             for row in self.cur.execute(query):
                 print(row, file=fh)
@@ -110,7 +175,7 @@ class Metrics():
         print("** Gender breakdown **", file=self.metrics_fh)
         genders = ['M', 'F', 'Prefer not to say']
         for gender in genders:
-            query = ('SELECT COUNT (*) from registration_profiles WHERE "Gender" == "{}"'.format(gender))
+            query = ('SELECT COUNT (*) from {} WHERE "Gender" == "{}"'.format(self.tabs['RegProfiles'], gender))
             self.cur.execute(query)
             print("- {}: {}".format(gender, self.cur.fetchone()[0]),
                   file=self.metrics_fh)
@@ -179,9 +244,15 @@ class Metrics():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("sqite database name is required.")
-        sys.exit(-1)
+    new_gen = Metrics()
+
+    if len(sys.argv) == 5:
+        new_gen.setup_db(sys.argv)
+        new_gen.load_db()
+    elif len(sys.argv) == 2:
+        new_gen.load_db(sys.argv)
     else:
-        new_gen = Metrics()
-        new_gen.generate_metrics(sys.argv[1])
+        new_gen.usage()
+        sys.exit(-1)
+
+    new_gen.generate_metrics()
