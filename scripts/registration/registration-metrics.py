@@ -39,10 +39,12 @@ class Metrics():
             "RegReceipts": "registration_receipts",
             "RegProfiles": "registration_profiles",
             "AddToRegs": "add_to_registration",
-            "AddExtras": "add_extras"
+            "AddExtras": "add_extras",
+            "Master": "registration_master"
+
+
         }
         self.db_name = "CNS2019.sqlite"
-        self.master_table_name = "registration_master"
 
     def usage(self):
         """Print usage instructions
@@ -79,17 +81,9 @@ class Metrics():
             subprocess.run(["rm", "-fv", self.db_name], check=True)
 
             self.__import_from_csv(filenames)
-            self.connect_to_db()
             self.__create_master_table()
             self.__populate_master_table()
-
-    def __populate_master_table(self):
-        """
-        Parse data and populate the master table
-        :returns: nothing
-
-        """
-        pass
+            self.__add_extras()
 
     def __import_from_csv(self, filenames):
         """
@@ -133,176 +127,410 @@ class Metrics():
             """\
             CREATE TABLE {} (\
             "Email" TEXT PRIMARY KEY,\
-            "Username", TEXT,\
             "First Name" TEXT,\
             "Middle Name" TEXT,\
             "Last Name" TEXT,\
             "Gender" TEXT,\
             "Institution" TEXT,\
             "Country" TEXT,\
+            "OCNS Member" TEXT,\
             "Invitation Letter" TEXT,\
             "Registration Group" TEXT,\
             "Main meeting Registration" TEXT,\
             "Workshop Registration" TEXT,\
             "Tutorial Registration" TEXT,\
-            "Banquet Tickets" TEXT,\
-            "Extra Banquet Tickets" TEXT,\
+            "Banquet Tickets" INT,\
             "Special Meal" TEXT,\
-            "Shirt S" TEXT,\
-            "Shirt M" TEXT,\
-            "Shirt L" TEXT,\
-            "Shirt XL" TEXT,\
+            "Shirt S" INT,\
+            "Shirt M" INT,\
+            "Shirt L" INT,\
+            "Shirt XL" INT,\
             "Payment Type" TEXT,\
-            "Payment Total" TEXT,\
-            "Balance" TEXT,\
+            "Payment Total" REAL,\
+            "Balance" REAL,\
             "Discount Code" TEXT\
             )
             """
-        ).format(self.master_table_name)
-        self.cur.execute(sqlite_create_table)
-        self.conn.commit()
+        ).format(self.tabs["Master"])
 
-    def close_db_connection(self):
+        conn = self.__get_db_conn()
+        cur = conn.cursor()
+        cur.execute(sqlite_create_table)
+        conn.commit()
+
+    def __populate_master_table(self):
         """
-        Close connection to database
+        Parse data and populate the master table
         :returns: nothing
 
         """
-        self.conn.close()
+        query = textwrap.dedent(
+            """\
+            SELECT * from {};
 
-    def connect_to_db(self, db_name=None):
+            """
+        ).format(self.tabs["RegReceipts"])
+
+        read_conn = self.__get_db_conn()
+        read_cur = read_conn.cursor()
+        write_conn = self.__get_db_conn()
+        write_cur = write_conn.cursor()
+        for row in read_cur.execute(query):
+            #  print(row.keys())
+            reg_grp = ""
+            member = "N"
+            reg_mm = "N"
+            reg_tut = "N"
+            reg_ws = "N"
+            banquet_tickets = 0
+
+            reg_nm = row["Reg Fee (Non-Member)"]
+            reg_f = row["Reg Fee (Faculty)"]
+            reg_p = row["Reg Fee (Postdoc)"]
+            reg_s = row["Reg Fee (Student)"]
+            reg_b = row["Reg Fee (Board)"]
+
+            if len(reg_f) > 0:
+                reg_grp = "Faculty"
+                member = "Y"
+            elif len(reg_p) > 0:
+                reg_grp = "Postdoc"
+                member = "Y"
+            elif len(reg_s) > 0:
+                reg_grp = "Student"
+                member = "Y"
+            elif len(reg_b) > 0:
+                reg_grp = "Board"
+                member = "Y"
+            elif len(reg_nm) > 0:
+                member = "N"
+                reg_grp = row["Registration Type"]
+            else:
+                print("Registration type not found!", file=sys.stderr)
+
+            registrations = (
+                row["Reg Fee (Non-Member)"] +
+                row["Reg Fee (Faculty)"] +
+                row["Reg Fee (Postdoc)"] +
+                row["Reg Fee (Student)"] +
+                row["Reg Fee (Board)"]
+            )
+
+            # Not elif because they are not mutually exclusive here
+            if 'Main Meeting' in registrations:
+                reg_mm = "Y"
+            if 'Tutorial' in registrations:
+                reg_tut = "Y"
+            if 'Workshops' in registrations:
+                reg_ws = "Y"
+
+            banquet_tickets = (
+                int(row["BanquetTickets"]) +
+                int(row["ExtraBanquetTickets"])
+            )
+
+            insert_query = textwrap.dedent(
+                """\
+                INSERT INTO {} (\
+                "Email",\
+                "First Name",\
+                "Middle Name",\
+                "Last Name",\
+                "Gender",\
+                "Institution",\
+                "Country",\
+                "OCNS Member",\
+                "Registration Group",\
+                "Invitation Letter",\
+                "Main meeting Registration",\
+                "Workshop Registration",\
+                "Tutorial Registration",\
+                "Banquet Tickets",\
+                "Special Meal",\
+                "Shirt S",\
+                "Shirt M",\
+                "Shirt L",\
+                "Shirt XL",\
+                "Payment Type",\
+                "Payment Total",\
+                "Balance",\
+                "Discount Code"\
+                )\
+                VALUES (\
+                "{}","{}","{}","{}","{}","{}","{}","{}",\
+                "{}","{}","{}","{}","{}",{},"{}",{},\
+                {},{},{},"{}",{},{},"{}"\
+                )
+                """
+            ).format(
+                self.tabs["Master"],
+                row["Email"],
+                row["First Name"],
+                row["Middle Name"],
+                row["Last Name"],
+                row["Gender"],
+                row["Institution"],
+                row["Country"],
+                member,
+                reg_grp,
+                row["Invitation Letter"],
+                reg_mm,
+                reg_ws,
+                reg_tut,
+                banquet_tickets,
+                ("" if
+                 (not row["Special Meal"] or row["Special Meal"] == "None")
+                 else row["Special Meal"]),
+                int(row["Shirt S"]),
+                int(row["Shirt M"]),
+                int(row["Shirt L"]),
+                int(row["Shirt XL"]),
+                row["Payment Type"],
+                float(row["Payment Total"]),
+                float(row["Balance"]),
+                ("" if
+                 (not row["Discount Code"] or row["Discount Code"] == "None")
+                 else row["Discount Code"]),
+            )
+            #  print(insert_query)
+            try:
+                write_cur.execute(insert_query)
+            except sqlite3.Error as e:
+                print("ERROR: ", e.args[0], file=sys.stderr)
+                print("Query was: ", insert_query, file=sys.stderr)
+
+        write_conn.commit()
+        write_conn.close()
+
+    def __add_extras(self):
+        """
+        Add extra registrations, either workshops and tutorials that were added
+        later, or banquet tickets and t-shirts
+
+        :returns: nothing
+
+        """
+        print("Adding extras:")
+
+        read_conn = self.__get_db_conn()
+        read_cur = read_conn.cursor()
+        read_conn_1 = self.__get_db_conn()
+        read_cur_1 = read_conn_1.cursor()
+        query = textwrap.dedent(
+            """\
+            SELECT * from {};
+
+            """
+        ).format(self.tabs["AddToRegs"])
+
+        read_cur.execute(query)
+        rows = read_cur.fetchall()
+        for row in rows:
+            new_reg_mm = "N"
+            new_reg_ws = "N"
+            new_reg_tut = "N"
+            reg_mm = "N"
+            reg_ws = "N"
+            reg_tut = "N"
+            registrations = (
+                row["Reg Fee (Non-Member)"] +
+                row["Reg Fee (Faculty)"] +
+                row["Reg Fee (Postdoc)"] +
+                row["Reg Fee (Student)"] +
+                row["Reg Fee (Board)"]
+            )
+            payment = float(row["Payment Total"])
+
+            # Not elif because they are not mutually exclusive here
+            if 'Main Meeting' in registrations:
+                reg_mm = "Y"
+            if 'Workshops' in registrations:
+                reg_ws = "Y"
+            if 'Tutorial' in registrations:
+                reg_tut = "Y"
+
+            check_query = textwrap.dedent(
+                """\
+                SELECT * FROM {} WHERE "Email"=="{}"
+                """
+            ).format(self.tabs["Master"], row["Email"])
+            # There should only be one entry, but let's check them all anyway.
+            read_cur_1.execute(check_query)
+            newrows = read_cur_1.fetchall()
+            for newrow in newrows:
+                initial_reg_mm = newrow["Main meeting Registration"]
+                initial_reg_ws = newrow["Workshop Registration"]
+                initial_reg_tut = newrow["Tutorial Registration"]
+                initial_payment = newrow["Payment Total"]
+
+                new_reg_mm = ("Y" if
+                              (reg_mm == "Y" or initial_reg_mm == "Y")
+                              else "N")
+                new_reg_ws = ("Y" if
+                              (reg_ws == "Y" or initial_reg_ws == "Y")
+                              else "N")
+                new_reg_tut = ("Y" if
+                               (reg_tut == "Y" or initial_reg_tut == "Y")
+                               else "N")
+                new_payment = initial_payment + payment
+
+            print("{}: {}{}{} + {}{}{} = {}{}{}".format(
+                newrow["Email"], initial_reg_mm, initial_reg_ws,
+                initial_reg_tut, reg_mm, reg_ws, reg_tut, new_reg_mm,
+                new_reg_ws, new_reg_tut))
+
+            update_query = textwrap.dedent(
+                """\
+                UPDATE {}\
+                SET "Main meeting Registration" = "{}",\
+                "Workshop Registration" = "{}",\
+                "Tutorial Registration" = "{}",\
+                "Payment Total" = "{}"\
+                WHERE "Email"=="{}"
+                """
+            ).format(self.tabs["Master"], new_reg_mm, new_reg_ws, new_reg_tut,
+                     new_payment, row["Email"])
+            #  print(update_query)
+            write_conn = self.__get_db_conn()
+            write_cur = write_conn.cursor()
+            write_cur.execute(update_query)
+            write_conn.commit()
+            write_conn.close()
+
+        # banquet tickets and and t-shirts
+        query = textwrap.dedent(
+            """\
+            SELECT * from {};
+
+            """
+        ).format(self.tabs["AddExtras"])
+
+        read_cur.execute(query)
+        rows = read_cur.fetchall()
+        for row in rows:
+            new_banquet_tickets = 0
+            new_special_meal = ""
+            banquet_tickets = int(row["BanquetTickets"])
+            special_meal = ("" if (not row["Special Meal"] or
+                                   row["Special Meal"] == "None")
+                            else row["Special Meal"])
+            extra_banquet_tickets = int(row["ExtraBanquetTickets"])
+            payment = float(row["Payment Total"])
+
+            new_t_s_s = 0
+            new_t_s_m = 0
+            new_t_s_l = 0
+            new_t_s_xl = 0
+            t_s_s = int(row["Shirt S"])
+            t_s_m = int(row["Shirt M"])
+            t_s_l = int(row["Shirt L"])
+            t_s_xl = int(row["Shirt XL"])
+
+            check_query = textwrap.dedent(
+                """\
+                SELECT * FROM {} WHERE "Email"=="{}"
+                """
+            ).format(self.tabs["Master"], row["Email"])
+
+            # There should only be one entry, but let's check them all anyway.
+            read_cur_1.execute(check_query)
+            newrows = read_cur_1.fetchall()
+            for newrow in newrows:
+                initial_banquet_tickets = newrow["Banquet Tickets"]
+                initial_special_meal = newrow["Special Meal"]
+                initial_t_s_s = newrow["Shirt S"]
+                initial_t_s_m = newrow["Shirt M"]
+                initial_t_s_l = newrow["Shirt L"]
+                initial_t_s_xl = newrow["Shirt XL"]
+                initial_payment = newrow["Payment Total"]
+
+                new_banquet_tickets = (initial_banquet_tickets +
+                                       banquet_tickets + extra_banquet_tickets)
+                new_special_meal = initial_special_meal + special_meal
+                new_t_s_s = initial_t_s_s + t_s_s
+                new_t_s_m = initial_t_s_m + t_s_m
+                new_t_s_l = initial_t_s_l + t_s_l
+                new_t_s_xl = initial_t_s_xl + t_s_xl
+                new_payment = initial_payment + payment
+
+            update_query = textwrap.dedent(
+                """\
+                UPDATE {}\
+                SET "Banquet Tickets" = "{}",\
+                "Special Meal" = "{}",\
+                "Shirt S" = "{}",\
+                "Shirt M" = "{}",\
+                "Shirt L" = "{}",\
+                "Shirt XL" = "{}",\
+                "Payment Total" = "{}"\
+                WHERE "Email"=="{}"
+                """
+            ).format(self.tabs["Master"], new_banquet_tickets,
+                     new_special_meal, new_t_s_s, new_t_s_m, new_t_s_l,
+                     new_t_s_xl, new_payment, row["Email"])
+            #  print(update_query)
+            write_conn = self.__get_db_conn()
+            write_cur = write_conn.cursor()
+            write_cur.execute(update_query)
+            write_conn.commit()
+            write_conn.close()
+
+    def __get_db_conn(self, db_name=None):
         """Connect to sqlite3 database
 
         :db_name: name of sqlite database
-        :returns: nothing
+        :returns: connection to the db
 
         """
         if not db_name:
             db_name = self.db_name
-        self.conn = sqlite3.connect(db_name)
-        self.cur = self.conn.cursor()
+        conn = sqlite3.connect(db_name)
+        conn.row_factory = sqlite3.Row
+
+        return conn
 
     def generate_metrics(self):
-        """Generate metrics using sqlite3 database.
+        """Generate metrics.
 
-        :db_name: name of database file
         :returns: nothing
-
         """
-        self.metrics_fh = open(self.metrics_fn, 'w')
-        self.__get_registrant_metrics()
-        #  self.__get_banquet_information()
-        #  self.__get_t_shirt_requests()
 
-        self.metrics_fh.close()
-
-    def __get_registrant_metrics(self):
-        """Get registration metrics.
-
-        :conn: data base connection self.cursor object
-        :returns: nothing
-
+    def dump_data(self):
         """
-        print("** Registrants information **", file=self.metrics_fh)
-        print(file=self.metrics_fh)
-
-        groups = ['Postdoc Member', 'Student Member', 'Faculty Member',
-                  "OCNS Board", "OCNS Member Approval", "Basic Contact"]
-        total_count = 0
-        for group in groups:
-            group_count = 0
-            query = ('SELECT {} from {} where "Group" == "{}" ORDER BY "Email"'.format(self.common_data, self.tabs['RegReceipts'], group))
-            with open("Registrants-from-profiles-{}.txt".format(group), 'w') as fh:
-                for row in self.cur.execute(query):
-                    print(row, file=fh)
-                    total_count += 1
-                    group_count += 1
-            print("{}: {}".format(group, group_count), file=self.metrics_fh)
-        print("Total: {}".format(total_count), file=self.metrics_fh)
-
-        # For basic contacts, the recipts contain the group information. These
-        # are not groups on Memberclicks. They are groups in the registration
-        # form to implement the pricing structure.
-        groups = ['Student', 'Faculty', 'Postdoc']
-        for group in groups:
-            query = ('SELECT {} from {} where "Registration Type" == "{}" ORDER BY "Email"'.format(self.common_data, self.tabs['RegReceipts'], group))
-            with open("Registrants-from-receipts-{}.txt".format(group), 'w') as fh:
-                for row in self.cur.execute(query):
-                    print(row, file=fh)
-        query = ('SELECT {} from {} where "Registration Type" == "" ORDER BY "Email"'.format(self.common_data, self.tabs['RegReceipts']))
-        with open("Registrants-from-receipts-members.txt".format(group), 'w') as fh:
-            for row in self.cur.execute(query):
-                print(row, file=fh)
-
-        print("** Gender breakdown **", file=self.metrics_fh)
-        genders = ['M', 'F', 'Prefer not to say']
-        for gender in genders:
-            query = ('SELECT COUNT (*) from {} WHERE "Gender" == "{}"'.format(self.tabs['RegProfiles'], gender))
-            self.cur.execute(query)
-            print("- {}: {}".format(gender, self.cur.fetchone()[0]),
-                  file=self.metrics_fh)
-
-    def __get_banquet_information(self):
-        """Get information for the banquet
+        Dump data
 
         :returns: nothing
 
         """
-        total_banquet_tickts = 0
-        banquet_list = open("Banquet-registrants.txt", 'w')
-        for row in self.cur.execute('SELECT  "Email", "BanquetTickets", "Special Meal" from registration_receipts where not "BanquetTickets" == "0" and not "BanquetTickets" == "None"'):
-            if row:
-                print("{}".format(row), file=banquet_list)
-                total_banquet_tickts += int(row[1])
-        for row in self.cur.execute('SELECT  "Email", "ExtraBanquetTickets", "Special Meal" from registration_receipts where not "ExtraBanquetTickets" == "0" and not "ExtraBanquetTickets" == "None"'):
-            if row:
-                print("{}".format(row), file=banquet_list)
-                total_banquet_tickts += int(row[1])
-        for row in self.cur.execute('SELECT "Email", "BanquetTickets", "Special Meal" from registration_extras where not "BanquetTickets" == "0" and not "BanquetTickets" == "None"'):
-            if row:
-                print("{}".format(row), file=banquet_list)
-                total_banquet_tickts += int(row[1])
-        for row in self.cur.execute('SELECT "Email", "ExtraBanquetTickets", "Special Meal" from registration_extras where not "ExtraBanquetTickets" == "0" and not "ExtraBanquetTickets" == "None"'):
-            if row:
-                print("{}".format(row), file=banquet_list)
-                total_banquet_tickts += int(row[1])
-        banquet_list.close()
+        self.__dump_csv_metrics()
 
-        print("Total banquet tickets requested: {}".format(total_banquet_tickts), file=self.metrics_fh)
+    def __dump_csv_metrics(self):
+        """
+        Dump metrics to csv files
 
-        # Special diets
-        special_meal_list = open("Banquet-special-meal-list.txt", 'w')
-        for row in self.cur.execute('SELECT "Email", "Special Meal" from registration_receipts where not "Special Meal" == "None"'):
-            print("{}".format(row), file=special_meal_list)
-        for row in self.cur.execute('SELECT "Email", "Special Meal" from registration_extras where not "Special Meal" == "None"'):
-            print("{}".format(row), file=special_meal_list)
-
-
-    def __get_t_shirt_requests(self):
-        """Extract t-shirt request data
         :returns: TODO
-
         """
-        print(file=self.metrics_fh)
-        sizes = ['Shirt S', 'Shirt M', 'Shirt L', 'Shirt XL']
-        t_shirt_list = open("T-shirt-list.txt", 'w')
-        for asize in sizes:
-            counter = 0
-            print("\n** {} **".format(asize), file=t_shirt_list)
-            for row in self.cur.execute('SELECT "Email", "{}" from registration_receipts where not "{}" == "0"'.format(asize, asize)):
-                data = row
-                if data is not None:
-                    print("{}".format(data), file=t_shirt_list)
-                    counter += int(data[-1])
-            # Also check the extras
-            for row in self.cur.execute('SELECT "Email", "{}" from registration_extras where not "{}" == "0"'.format(asize, asize)):
-                data = row
-                if data is not None:
-                    print("{}".format(data), file=t_shirt_list)
-                    counter += int(data[-1])
-            print("** Total {}: {} **".format(asize, counter), file=t_shirt_list)
+        query = textwrap.dedent(
+            """\
+            SELECT * FROM {}\
+            ORDER BY "Email";
+            """
+        ).format(self.tabs['Master'])
 
-        t_shirt_list.close()
+        commands = textwrap.dedent(
+            """\
+            .open {}
+            .headers on
+            .mode csv
+            .separator ,
+            .output {}
+            {}
+            .quit \n
+            """.format(
+                self.db_name, "registration_master.csv", query
+            ))
+
+        subprocess.run(["sqlite3"], input=commands, text=True, check=True)
 
 
 if __name__ == "__main__":
@@ -311,12 +539,11 @@ if __name__ == "__main__":
     if len(sys.argv) == 5:
         print("Loading csv data to table", file=sys.stderr)
         new_gen.setup_new_db(sys.argv)
-        new_gen.connect_to_db()
     elif len(sys.argv) == 2:
-        new_gen.connect_to_db(sys.argv)
+        pass
     else:
         new_gen.usage()
         sys.exit(-1)
 
     #  new_gen.generate_metrics()
-    #  new_gen.close_db_connection()
+    new_gen.dump_data()
