@@ -8,12 +8,10 @@ database.
 The following tables will be created
 
 > .tables
-registration_extra_events  registration_profiles
-registration_extras        registration_receipts
-registration_master
+add_extras             registration_master    registration_receipts
+add_to_registration    registration_profiles
 
-
-File: registration-metrics.py
+File: registration-metrics-sqlite.py
 
 Copyright 2019 Ankur Sinha
 Author: Ankur Sinha <sanjay DOT ankur AT gmail DOT com>
@@ -494,41 +492,311 @@ class Metrics():
 
         :returns: nothing
         """
+        conn = self.__get_db_conn()
+        cur = conn.cursor()
+        with open("2019-metrics.txt", 'w') as fh:
+            # Overall numbers
+            print("** OVERALL METRICS**", file=fh)
+            query = textwrap.dedent(
+                """\
+                SELECT COUNT(*) from {};\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            total_registrants = cur.fetchone()[0]
 
-    def dump_data(self):
+            print("Total registrants: {}".format(total_registrants),
+                  file=fh)
+
+            # Main meeting
+            query = textwrap.dedent(
+                """\
+                SELECT COUNT(*) from {}\
+                WHERE "Main meeting Registration"=="Y";
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            total_registrants = cur.fetchone()[0]
+
+            print("Total registrants (main meeting): {}".format(
+                total_registrants), file=fh)
+
+            # Workshops
+            query = textwrap.dedent(
+                """\
+                SELECT COUNT(*) from {}\
+                WHERE "Workshop Registration"=="Y";
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            total_registrants = cur.fetchone()[0]
+
+            print("Total registrants (workshops): {}".format(
+                total_registrants), file=fh)
+
+            # Tutorials
+            query = textwrap.dedent(
+                """\
+                SELECT COUNT(*) from {}\
+                WHERE "Tutorial Registration"=="Y";
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            total_registrants = cur.fetchone()[0]
+
+            print("Total registrants (tutorials): {}".format(
+                total_registrants), file=fh)
+
+            # Overall breakdown by groups
+            print("\nGroup metrics:", file=fh)
+            query = textwrap.dedent(
+                """\
+                SELECT "Registration Group", COUNT(*) from {}\
+                GROUP BY "Registration Group"\
+                ORDER BY COUNT(*) ASC;\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            rows = cur.fetchall()
+            for group, numbers in rows:
+                print("{}: {}".format(group, numbers), file=fh)
+
+            # Overall breakdown by gender
+            print("\nGender metrics:", file=fh)
+            query = textwrap.dedent(
+                """\
+                SELECT "Gender", COUNT(*) FROM {}\
+                GROUP BY "Gender";\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            rows = cur.fetchall()
+            for group, numbers in rows:
+                print("{}: {}".format(group, numbers), file=fh)
+
+            # Overall breakdown by country
+            print("\nLocation metrics:", file=fh)
+            query = textwrap.dedent(
+                """\
+                SELECT "Country", COUNT(*) FROM {}\
+                GROUP BY "Country"\
+                ORDER BY COUNT(*) ASC;\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            rows = cur.fetchall()
+            for group, numbers in rows:
+                print("{}: {}".format(group, numbers), file=fh)
+
+            # Shirts
+            print("\nShirts requested:", file=fh)
+            totalshirts = 0
+            for shirtsize in ["S", "M", "L", "XL"]:
+                query = textwrap.dedent(
+                    """\
+                    SELECT SUM("Shirt {}") from {};\
+                    """
+                ).format(shirtsize, self.tabs["Master"])
+                cur.execute(query)
+                shirts = cur.fetchone()[0]
+                totalshirts += shirts
+
+                print("Shirts ({}): {}".format(
+                    shirtsize, shirts), file=fh)
+            print("Shirts (total): {}".format(totalshirts), file=fh)
+
+            # Banquet tickets
+            query = textwrap.dedent(
+                """\
+                SELECT SUM("Banquet Tickets") from {};\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            banquet_tickets = cur.fetchone()[0]
+            print("\nBanquet tickets purchased: {}".format(banquet_tickets),
+                  file=fh)
+
+            # Members
+            print("\n** MEMBER METRICS**", file=fh)
+            query = textwrap.dedent(
+                """\
+                SELECT COUNT(*) from {}\
+                WHERE "OCNS Member"=="Y";\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            total_registrants = cur.fetchone()[0]
+            print("OCNS members registered: {}".format(total_registrants),
+                  file=fh)
+
+            # Members breakdown
+            query = textwrap.dedent(
+                """\
+                SELECT "Registration Group", COUNT(*) from {}\
+                WHERE "OCNS Member"=="Y"\
+                GROUP BY "Registration Group"\
+                ORDER BY COUNT(*) ASC;\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            rows = cur.fetchall()
+            for group, numbers in rows:
+                print("{}: {}".format(group, numbers), file=fh)
+
+            # Overall breakdown by gender
+            print("\nGender metrics:", file=fh)
+            query = textwrap.dedent(
+                """\
+                SELECT "Gender", COUNT(*) FROM {}\
+                WHERE "OCNS Member"=="Y"\
+                GROUP BY "Gender";\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            rows = cur.fetchall()
+            for group, numbers in rows:
+                print("{}: {}".format(group, numbers), file=fh)
+
+            print("\nLocation metrics:", file=fh)
+            query = textwrap.dedent(
+                """\
+                SELECT "Country", COUNT(*) FROM {}\
+                WHERE "OCNS Member"=="Y"\
+                GROUP BY "Country"\
+                ORDER BY COUNT(*) ASC;\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            rows = cur.fetchall()
+            for group, numbers in rows:
+                print("{}: {}".format(group, numbers), file=fh)
+
+            # Non-Members
+            print("\n** NON-MEMBER METRICS**", file=fh)
+            query = textwrap.dedent(
+                """\
+                SELECT COUNT(*) from {}\
+                WHERE "OCNS Member"=="N";\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            total_registrants = cur.fetchone()[0]
+            print("Non members registered: {}".format(total_registrants),
+                  file=fh)
+
+            # Members breakdown
+            query = textwrap.dedent(
+                """\
+                SELECT "Registration Group", COUNT(*) from {}\
+                WHERE "OCNS Member"=="N"\
+                GROUP BY "Registration Group"\
+                ORDER BY COUNT(*) ASC;\
+                """
+            ).format(self.tabs["Master"])
+            cur.execute(query)
+            rows = cur.fetchall()
+            for group, numbers in rows:
+                print("{}: {}".format(group, numbers), file=fh)
+
+    def dump_all_data(self):
         """
-        Dump data
-
-        :returns: nothing
-
-        """
-        self.__dump_csv_metrics()
-
-    def __dump_csv_metrics(self):
-        """
-        Dump metrics to csv files
+        Dump data to files.
 
         :returns: TODO
         """
+
+        # Full table dump
         query = textwrap.dedent(
             """\
             SELECT * FROM {}\
             ORDER BY "Email";
             """
         ).format(self.tabs['Master'])
+        self.__dump_data("2019-Registration-master.csv", query, "csv")
+        self.__dump_data("2019-Registration-master.html", query, "html")
 
+        # Main meeting attendees
+        query = textwrap.dedent(
+            """\
+            SELECT * FROM {}\
+            WHERE "Main meeting Registration"=="Y"\
+            ORDER BY "Email";
+            """).format(self.tabs['Master'])
+        self.__dump_data("2019-Main-meeting-attendees.csv", query, "csv")
+        self.__dump_data("2019-Main-meeting-attendees.html", query, "html")
+
+        # Workshop
+        query = textwrap.dedent(
+            """\
+            SELECT *\
+            FROM {}\
+            WHERE "Workshop Registration"=="Y"\
+            ORDER BY "Email";
+            """).format(self.tabs['Master'])
+        self.__dump_data("2019-Workshop-attendees.csv", query, "csv")
+        self.__dump_data("2019-Workshop-attendees.html", query, "html")
+
+        # Tutorials
+        query = textwrap.dedent(
+            """\
+            SELECT *\
+            FROM {}\
+            WHERE "Tutorial Registration"=="Y"\
+            ORDER BY "Email";
+            """).format(self.tabs['Master'])
+        self.__dump_data("2019-Tutorial-attendees.csv", query, "csv")
+        self.__dump_data("2019-Tutorial-attendees.html", query, "html")
+
+        # Banquets
+        query = textwrap.dedent(
+            """\
+            SELECT *\
+            FROM {}\
+            WHERE not "Banquet Tickets"==0\
+            ORDER BY "Email";
+            """).format(self.tabs['Master'])
+        self.__dump_data("2019-Banquet-attendees.csv", query, "csv")
+        self.__dump_data("2019-Banquet-attendees.html", query, "html")
+
+        # T-shirts
+        query = textwrap.dedent(
+            """\
+            SELECT *\
+            FROM {}\
+            WHERE \
+            not "Shirt S"== 0 OR\
+            not "Shirt M"== 0 OR\
+            not "Shirt L"== 0 OR\
+            not "Shirt XL"== 0\
+            ORDER BY "Email";
+            """).format(self.tabs['Master'])
+
+        self.__dump_data("2019-shirts.csv", query, "csv")
+        self.__dump_data("2019-shirts.html", query, "html")
+
+    def __dump_data(self, output_filename, query, output_format="csv"):
+        """
+        Dump results of query to a file.
+
+        Uses SQlite's imbuilt import functions for simplicity
+
+        :output_filename: File to dump data to
+        :query: SQL query to execute
+        :output_format: what format to output in. html, csv, tabs
+        :returns: TODO
+
+        """
         commands = textwrap.dedent(
             """\
             .open {}
             .headers on
-            .mode csv
+            .mode {}
             .separator ,
             .output {}
             {}
             .quit \n
             """.format(
-                self.db_name, "registration_master.csv", query
-            ))
+                self.db_name, output_format, output_filename, query))
 
         subprocess.run(["sqlite3"], input=commands, text=True, check=True)
 
@@ -539,11 +807,6 @@ if __name__ == "__main__":
     if len(sys.argv) == 5:
         print("Loading csv data to table", file=sys.stderr)
         new_gen.setup_new_db(sys.argv)
-    elif len(sys.argv) == 2:
-        pass
-    else:
-        new_gen.usage()
-        sys.exit(-1)
 
-    #  new_gen.generate_metrics()
-    new_gen.dump_data()
+    new_gen.generate_metrics()
+    new_gen.dump_all_data()
