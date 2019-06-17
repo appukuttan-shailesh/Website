@@ -3,25 +3,14 @@
 Generate registration metrics from Memberclicks data.
 
 To make the data easier to query, we first import it into a simple sqlite
-database. Please use the following commands to do so. The table names are
-important, since we need them to run the queries from python here.
+database.
 
-When importing the receipts tables, please drop the uneeded information such as
-the receipt id and so on. These cause errors in the import.
-
-$ sqlite3
-> .open database.db
-> .separator ","
-> .import <registration profiles csv> registration_profiles
-> .import <registration receipts csv> registration_profiles
-> .import <extras receipts> registration_extras
-> .import <extras events recipts> registration_extra_events
-
-If imported correctly the .tables command would return this:
+The following tables will be created
 
 > .tables
 registration_extra_events  registration_profiles
 registration_extras        registration_receipts
+registration_master
 
 
 File: registration-metrics.py
@@ -36,6 +25,7 @@ import sqlite3
 import os
 import textwrap
 import subprocess
+
 
 class Metrics():
 
@@ -52,6 +42,7 @@ class Metrics():
             "AddExtras": "add_extras"
         }
         self.db_name = "CNS2019.sqlite"
+        self.master_table_name = "registration_master"
 
     def usage(self):
         """Print usage instructions
@@ -76,7 +67,7 @@ class Metrics():
         print("3. Add to registrations export csv", file=sys.stderr)
         print("4. Add extras csv", file=sys.stderr)
 
-    def setup_db(self, filenames):
+    def setup_new_db(self, filenames):
         """
         Import csv files into sqlite3 database.
 
@@ -86,6 +77,27 @@ class Metrics():
         if os.path.isfile(self.db_name):
             print("{} exists. Removing and re importing".format(self.db_name))
             subprocess.run(["rm", "-fv", self.db_name], check=True)
+
+            self.__import_from_csv(filenames)
+            self.connect_to_db()
+            self.__create_master_table()
+            self.__populate_master_table()
+
+    def __populate_master_table(self):
+        """
+        Parse data and populate the master table
+        :returns: nothing
+
+        """
+        pass
+
+    def __import_from_csv(self, filenames):
+        """
+        Import data from csv to the tables.
+        :returns: nothing
+
+        """
+        print("Loading CSV data", file=sys.stderr)
 
         sqlite_init = textwrap.dedent(
             """\
@@ -100,15 +112,65 @@ class Metrics():
 
             """.format(
                 self.db_name,
-                sys.argv[1], self.tabs["RegReceipts"],
-                sys.argv[2], self.tabs["RegProfiles"],
-                sys.argv[3], self.tabs["AddToRegs"],
-                sys.argv[4], self.tabs["AddExtras"],
+                filenames[1], self.tabs["RegProfiles"],
+                filenames[2], self.tabs["RegReceipts"],
+                filenames[3], self.tabs["AddToRegs"],
+                filenames[4], self.tabs["AddExtras"],
             ))
 
         subprocess.run(["sqlite3"], input=sqlite_init, text=True, check=True)
 
-    def load_db(self, db_name=None):
+    def __create_master_table(self):
+        """
+        Create the master table
+        :returns: nothing
+
+        """
+
+        print("Creating master table", file=sys.stderr)
+
+        sqlite_create_table = textwrap.dedent(
+            """\
+            CREATE TABLE {} (\
+            "Email" TEXT PRIMARY KEY,\
+            "Username", TEXT,\
+            "First Name" TEXT,\
+            "Middle Name" TEXT,\
+            "Last Name" TEXT,\
+            "Gender" TEXT,\
+            "Institution" TEXT,\
+            "Country" TEXT,\
+            "Invitation Letter" TEXT,\
+            "Registration Group" TEXT,\
+            "Main meeting Registration" TEXT,\
+            "Workshop Registration" TEXT,\
+            "Tutorial Registration" TEXT,\
+            "Banquet Tickets" TEXT,\
+            "Extra Banquet Tickets" TEXT,\
+            "Special Meal" TEXT,\
+            "Shirt S" TEXT,\
+            "Shirt M" TEXT,\
+            "Shirt L" TEXT,\
+            "Shirt XL" TEXT,\
+            "Payment Type" TEXT,\
+            "Payment Total" TEXT,\
+            "Balance" TEXT,\
+            "Discount Code" TEXT\
+            )
+            """
+        ).format(self.master_table_name)
+        self.cur.execute(sqlite_create_table)
+        self.conn.commit()
+
+    def close_db_connection(self):
+        """
+        Close connection to database
+        :returns: nothing
+
+        """
+        self.conn.close()
+
+    def connect_to_db(self, db_name=None):
         """Connect to sqlite3 database
 
         :db_name: name of sqlite database
@@ -247,12 +309,14 @@ if __name__ == "__main__":
     new_gen = Metrics()
 
     if len(sys.argv) == 5:
-        new_gen.setup_db(sys.argv)
-        new_gen.load_db()
+        print("Loading csv data to table", file=sys.stderr)
+        new_gen.setup_new_db(sys.argv)
+        new_gen.connect_to_db()
     elif len(sys.argv) == 2:
-        new_gen.load_db(sys.argv)
+        new_gen.connect_to_db(sys.argv)
     else:
         new_gen.usage()
         sys.exit(-1)
 
-    new_gen.generate_metrics()
+    #  new_gen.generate_metrics()
+    #  new_gen.close_db_connection()
