@@ -715,6 +715,29 @@ class Metrics():
         self.__dump_data("2019-Registration-master.csv", query, "csv")
         self.__dump_data("2019-Registration-master.html", query, "html")
 
+        # Full table dump selected fields
+        query = textwrap.dedent(
+            """\
+            SELECT "First Name",\
+            "Middle Name",\
+            "Last Name",\
+            "Email",\
+            "Main meeting Registration",\
+            "Workshop Registration",\
+            "Tutorial Registration",\
+            "Shirt S",\
+            "Shirt M",\
+            "Shirt L",\
+            "Shirt XL",\
+            "Banquet Tickets",\
+            "Special Meal"\
+            FROM {}\
+            ORDER BY "Email";
+            """
+        ).format(self.tabs['Master'])
+        self.__dump_data("2019-Registration-all.csv", query, "csv")
+        self.__dump_data("2019-Registration-all.html", query, "html")
+
         # Main meeting attendees
         query = textwrap.dedent(
             """\
@@ -750,7 +773,13 @@ class Metrics():
         # Banquets
         query = textwrap.dedent(
             """\
-            SELECT *\
+            SELECT \
+            "First Name",\
+            "Middle Name",\
+            "Last Name",\
+            "Email",\
+            "Banquet Tickets",\
+            "Special Meal"\
             FROM {}\
             WHERE not "Banquet Tickets"==0\
             ORDER BY "Email";
