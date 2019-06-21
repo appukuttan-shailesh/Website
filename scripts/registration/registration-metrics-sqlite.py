@@ -49,7 +49,8 @@ class Metrics():
         :returns: nothing
 
         """
-        print("Usage: {} db_name | raw_files".format(os.path.basename(__file__)), file=sys.stderr)
+        print("Usage: {} db_name | raw_files".format(
+            os.path.basename(__file__)), file=sys.stderr)
         print(file=sys.stderr)
         print(textwrap.dedent(
             """\
@@ -482,8 +483,13 @@ class Metrics():
         """
         if not db_name:
             db_name = self.db_name
-        conn = sqlite3.connect(db_name)
-        conn.row_factory = sqlite3.Row
+
+        if os.path.isfile(self.db_name):
+            conn = sqlite3.connect(db_name)
+            conn.row_factory = sqlite3.Row
+        else:
+            print("Could not find db file: {}".format(db_name),
+                  file=sys.stderr)
 
         return conn
 
