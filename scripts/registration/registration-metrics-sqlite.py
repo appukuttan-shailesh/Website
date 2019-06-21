@@ -490,6 +490,7 @@ class Metrics():
         else:
             print("Could not find db file: {}".format(db_name),
                   file=sys.stderr)
+            self.usage()
             sys.exit(-1)
 
         return conn
