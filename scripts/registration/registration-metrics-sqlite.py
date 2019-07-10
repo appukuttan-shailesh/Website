@@ -730,6 +730,7 @@ class Metrics():
             "Middle Name",\
             "Last Name",\
             "Email",\
+            "Institution",\
             "Main meeting Registration",\
             "Workshop Registration",\
             "Tutorial Registration",\
