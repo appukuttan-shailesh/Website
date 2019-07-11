@@ -339,6 +339,8 @@ class Metrics():
                 row["Reg Fee (Board)"]
             )
             payment = float(row["Payment Total"])
+            discount_code = (row["Discount Code"] if row["Discount Code"] else
+                             "")
 
             # Not elif because they are not mutually exclusive here
             if 'Main Meeting' in registrations:
@@ -361,6 +363,8 @@ class Metrics():
                 initial_reg_ws = newrow["Workshop Registration"]
                 initial_reg_tut = newrow["Tutorial Registration"]
                 initial_payment = newrow["Payment Total"]
+                initial_discount_code = (newrow["Discount Code"] if
+                                         newrow["Discount Code"] else "")
 
                 new_reg_mm = ("Y" if
                               (reg_mm == "Y" or initial_reg_mm == "Y")
@@ -372,6 +376,7 @@ class Metrics():
                                (reg_tut == "Y" or initial_reg_tut == "Y")
                                else "N")
                 new_payment = initial_payment + payment
+                new_discount_code = (discount_code + " " + initial_discount_code)
 
             print("{}: {}{}{} + {}{}{} = {}{}{}".format(
                 newrow["Email"], initial_reg_mm, initial_reg_ws,
@@ -384,11 +389,12 @@ class Metrics():
                 SET "Main meeting Registration" = "{}",\
                 "Workshop Registration" = "{}",\
                 "Tutorial Registration" = "{}",\
-                "Payment Total" = "{}"\
+                "Payment Total" = "{}",\
+                "Discount Code" = "{}"\
                 WHERE "Email"=="{}"
                 """
             ).format(self.tabs["Master"], new_reg_mm, new_reg_ws, new_reg_tut,
-                     new_payment, row["Email"])
+                     new_payment, new_discount_code, row["Email"])
             #  print(update_query)
             write_conn = self.__get_db_conn()
             write_cur = write_conn.cursor()
