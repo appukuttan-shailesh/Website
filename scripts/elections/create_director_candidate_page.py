@@ -20,7 +20,7 @@ inactive_members = "inactive.csv"
 output_file = "candidates_{}.html".format(year)
 template = """
 
-<table border="1" frame="above">
+<table border="1" frame="above" id="{}">
     <tbody>
         <tr valign="middle"  style="background : #eff8fd">
             <td style="border: 0px; width:100px"><img style="width: 100px; float: left; margin-right: 10px; margin-left: 10px;" src="{}" alt="" /></td>
@@ -122,8 +122,8 @@ for surname in ordered:
     pic = row['File Attachment']
     url = row['URL']
 
-    body += template.format(pic, url, name, memb, addr1, addr2, addr3, info,
-                            mot, particip, oth)
+    body += template.format(name, pic, url, name, memb, addr1, addr2, addr3,
+                            info, mot, particip, oth)
 
 out.write(body)
 out.close()
