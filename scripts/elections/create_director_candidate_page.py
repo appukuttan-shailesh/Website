@@ -40,7 +40,7 @@ template = """
         <tr>
             <td style="border: 0px; width: 10px; float: left; margin-right: 10px; margin-left: 10px;">&nbsp;</td>
             <td style="border: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 1px; margin-left: 0px; outline-width: 0px; outline-style: initial; outline-color: initial; line-height: 18px; padding: 0px;">
-                <p><h2>Motivation:</h2>&nbsp;{}</p>
+                <p><h2>Motivation:</h2>{}</p>
                 <p>{}</p>
                 <p>{}</p>
             </td>
@@ -106,7 +106,7 @@ for surname in ordered:
     mot = row['Motivation']
     oth = row['Other activities']
     if len(oth) > 1:
-        oth = '<h2>Other information:</h2>&nbsp;{}'.format(oth)
+        oth = '<h2>Other information:</h2>{}'.format(oth)
 
     att = row['Attend CNS']
     if att == 'none':
@@ -117,7 +117,7 @@ for surname in ordered:
 
     year = row['Member start']
 
-    particip = "<h2>OCNS and CNS participation:</h2> attended {} CNS meeting(s){}. OCNS member since {}.".format(att, rev, year)
+    particip = "<h2>OCNS and CNS participation:</h2>Attended {} CNS meeting(s){}. OCNS member since {}.".format(att, rev, year)
 
     pic = row['File Attachment']
     url = row['URL']
