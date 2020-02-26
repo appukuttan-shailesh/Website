@@ -11,6 +11,12 @@ The complete registration fee is waived. All Board members are OCNS members, so
 we do not use vouchers for this group. The relevant forms are set up so that
 the prices for this group are null.
 
+Invited keynote speakers
+=========================
+
+The complete registration fee is waived.
+Invited keynote speakers use vouchers.
+
 The Programme Committee
 ========================
 
