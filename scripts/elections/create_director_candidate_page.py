@@ -13,7 +13,7 @@ script below.
 
 import csv
 
-year = 2019
+year = 2020
 fn = "ReceiptExport.csv"
 active_members = "active.csv"
 inactive_members = "inactive.csv"
@@ -23,7 +23,7 @@ template = """
 <table border="1" frame="above" id="{}">
     <tbody>
         <tr valign="middle"  style="background : #eff8fd">
-            <td style="border: 0px; width:100px"><img style="width: 100px; float: left; margin-right: 10px; margin-left: 10px;" src="{}" alt="" /></td>
+            <td style="border: 0px; width:100px"><img style="width: 100px; float: left; margin-right: 10px; margin-left: 10px;" src="{}" alt="Picture of {}" /></td>
             <td style="border: 0px; width:200px; margin-top: 0px; margin-right: 10px; margin-bottom: 5px; margin-left: 10px; outline-width: 0px; outline-style: initial; outline-color: initial; line-height: 18px; padding: 0px;">
                 <p><strong><a href="{}" target="_blank">{}</a></strong></p>
                 <address>{}</address>
@@ -73,6 +73,7 @@ with open(active_members, 'r') as csvfile:
             for key in ['Group', 'City', 'Institution', 'Country']:
                 candidates[name][key] = row[key].title()
 
+"""
 with open(inactive_members, 'r') as csvfile:
     reader = csv.DictReader(csvfile, delimiter=',', quotechar='"')
 
@@ -83,6 +84,7 @@ with open(inactive_members, 'r') as csvfile:
         if name in candidates:
             for key in ['Group', 'City', 'Institution', 'Country']:
                 candidates[name][key] = row[key].title()
+"""
 
 for surname in ordered:
 
@@ -112,17 +114,16 @@ for surname in ordered:
     if att == 'none':
         att = '0'
 
-    rev = ", was reviewer for {} meetings".format(
-        row['Review CNS'] if row['Review CNS'] != "none" else "")
+    rev = "Programme Committee/Local Organizing Committee member: {} meeting(s)".format(row['Member PC or LO'] if row['Member PC or LO'] != "never" else "0")
 
-    year = row['Member start']
+    member_year = row['Member start']
 
-    particip = "<h2>OCNS and CNS participation:</h2>Attended {} CNS meeting(s){}. OCNS member since {}.".format(att, rev, year)
+    particip = "<h2>OCNS and CNS participation:</h2>Attended {} CNS meeting(s).  {}. OCNS member since {}.".format(att, rev, member_year)
 
-    pic = row['File Attachment']
+    pic = "https://ocns.memberclicks.net/assets/images/Elections/{}/{}.jpg".format(year, row['Last Name'])
     url = row['URL']
 
-    body += template.format(name, pic, url, name, memb, addr1, addr2, addr3,
+    body += template.format(name, pic, name, url, name, memb, addr1, addr2, addr3,
                             info, mot, particip, oth)
 
 out.write(body)
