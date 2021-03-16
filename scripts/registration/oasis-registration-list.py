@@ -3,7 +3,7 @@
 Python script to fetch list of CNS registrants from Memberclicks Oasis based on
 the RegistrationYear attribute.
 
-File: memberinfo.py
+File: oasis-registration-list.py
 
 Copyright 2021 Ankur Sinha
 Author: Ankur Sinha <sanjay DOT ankur AT gmail DOT com>
