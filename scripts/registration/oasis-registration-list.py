@@ -108,7 +108,7 @@ def get_registered_users(api_token, year):
             print("Iterating pages")
             next_page_url = results["firstPageUrl"]
             now = datetime.now().strftime("%Y%m%d%H%M")
-            csv_filename = "{}-cns-2021-registrants.csv".format(now)
+            csv_filename = "{}-cns-{}-registrants.csv".format(now, year)
             print("Writing to file: {}".format(csv_filename))
             with open(csv_filename, 'w') as f:
                 print(
