@@ -42,7 +42,6 @@ def get_token(client_id, client_secret):
     client = BackendApplicationClient(client_id)
     oauth = OAuth2Session(client=client)
 
-    # Initialise to nothing
     api_token = oauth.fetch_token(token_url=URL_auth, auth=auth)
 
     #  print("API Token received: {}".format(api_token))
