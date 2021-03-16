@@ -82,10 +82,13 @@ def get_registered_users(api_token, year):
     """
     headers = {
         "Accept": "application/json",
-        "Authorization": "Bearer {}".format(api_token)
+        "Authorization": "Bearer {}".format(api_token),
+    }
+    params = {
+        "pageSize": "100"
     }
     data = {
-        'RegistrationYear': year
+        'RegistrationYear': year,
     }
     # No slash at the start here
     URL_profiles = baseurl + "api/v1/profile/search"
@@ -93,13 +96,13 @@ def get_registered_users(api_token, year):
     r = client.post(URL_profiles, headers=headers, json=data)
     # https://help.memberclicks.com/hc/en-us/articles/230536427-API-Resources-Profile-Search
     if r.status_code == 201:
+        # https://help.memberclicks.com/hc/en-us/articles/230536367#get-a-list-of-profiles-by-search-id
         search_url = r.json()["profilesUrl"]
         print("Received search URL: {}".format(search_url))
         print("Getting profiles")
-        # https://help.memberclicks.com/hc/en-us/articles/230536367#get-a-list-of-profiles-by-search-id
         URL_profiles = search_url
         client = OAuth2Session(client_id, token=token)
-        r = client.get(URL_profiles, headers=headers)
+        r = client.get(URL_profiles, headers=headers, params=params)
         if r.status_code == 200:
             results = r.json()
             print("Total profiles found: {}".format(results["totalCount"]))
@@ -123,12 +126,11 @@ def get_registered_users(api_token, year):
                     file=f
                 )
                 while True:
-                    print("Current page URL: {}".format(next_page_url))
                     client = OAuth2Session(client_id, token=token)
                     r = client.get(next_page_url, headers=headers)
+                    results = r.json()
                     print("Page: {}/{}".format(results["pageNumber"],
                                                results["totalPageCount"]))
-                    print("Printing profiles on this page to file.")
 
                     for profile in results["profiles"]:
                         # Number of abstracts
@@ -160,11 +162,10 @@ def get_registered_users(api_token, year):
                                 num_abstracts
                             ), file=f)
 
-                    print("Next page URL: {}".format(next_page_url))
-                    if "nextPageURL" not in results:
+                    next_page_url = results["nextPageUrl"]
+                    if not next_page_url:
+                        print("Reached last page. Done.")
                         break
-                    else:
-                        next_page_url = results["nextPageURL"]
 
     else:
         print("Received status code {}".format(r.status_code))
